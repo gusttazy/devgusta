@@ -1,5 +1,6 @@
 "use client";
 
+// Importação dos ícones das tecnologias
 import {
   SiHtml5,
   SiCss3,
@@ -14,9 +15,11 @@ import {
   SiPostgresql,
 } from "react-icons/si";
 
+// Importação de animações com Framer Motion
 import { motion } from "framer-motion";
 import React from "react";
 
+// Lista de tecnologias com nome e ícone associado
 const techs = [
   { name: "HTML5", icon: SiHtml5 },
   { name: "CSS3", icon: SiCss3 },
@@ -32,41 +35,55 @@ const techs = [
   { name: "Tailwind CSS", icon: SiTailwindcss },
 ];
 
-// Container que aplica stagger nas crianças
+// Variantes para animação do container (stagger effect)
+// Faz com que os filhos sejam animados em sequência
 const containerVariants = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
+      staggerChildren: 0.06,
+      delayChildren: 0.05,
     },
   },
 };
 
-// Animação de entrada dos cards
+// Variantes para animação de entrada dos cards individuais
 const cardVariants = {
-  hidden: { opacity: 0, y: 36, scale: 0.95, filter: "blur(6px)" },
+  hidden: {
+    opacity: 0,
+    y: 24,
+    scale: 0.97,
+    filter: "blur(4px)",
+  },
   show: {
     opacity: 1,
     y: 0,
     scale: 1,
     filter: "blur(0px)",
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1],
+    },
   },
 };
 
+// Componente principal de Tecnologias
 export default function Techs() {
   return (
     <section id="techs" className="py-24 px-4 min-h-[60vh] overflow-hidden">
       <div className="max-w-6xl mx-auto text-center">
+        {/* Título */}
         <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-[#00ff9d] to-[#00ff9d]/70 text-transparent bg-clip-text">
           Tecnologias
         </h2>
+
+        {/* Descrição */}
         <p className="text-white/80 text-lg max-w-2xl mx-auto mb-14">
           Tecnologias e ferramentas que utilizo para transformar ideias em
           realidade digital.
         </p>
 
+        {/* Grid de tecnologias com animação */}
         <motion.div
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"
           variants={containerVariants}
@@ -82,6 +99,7 @@ export default function Techs() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.97 }}
             >
+              {/* Ícone com animação no hover */}
               <motion.div
                 className="text-[#00ff9d] mb-2"
                 whileHover={{ scale: 1.2 }}
@@ -89,6 +107,8 @@ export default function Techs() {
               >
                 {React.createElement(tech.icon, { size: 40 })}
               </motion.div>
+
+              {/* Nome da tecnologia */}
               <span className="text-sm text-white/80 font-medium tracking-wide text-center">
                 {tech.name}
               </span>
