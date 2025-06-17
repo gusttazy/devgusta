@@ -6,11 +6,14 @@ import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import emailjs from "@emailjs/browser";
 
+// Configurações do serviço EmailJS
 const serviceId = "service_lpbicy5";
 const templateId = "template_nz60vlv";
 const publicKey = "gwnEUAC8kpCMaBwvv";
 
+// Componente de formulário de contato
 export default function Contact() {
+  // Estado para os dados do formulário
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,9 +21,13 @@ export default function Contact() {
     message: "",
   });
 
+  // Estado para controle de campo focado (para efeitos visuais no label)
   const [focusedField, setFocusedField] = useState<string | null>(null);
+
+  // Estado para indicar carregamento (envio da mensagem)
   const [sending, setSending] = useState(false);
 
+  // Função de envio do formulário
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSending(true);
@@ -30,24 +37,23 @@ export default function Contact() {
         serviceId,
         templateId,
         {
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          time: new Date().toLocaleString(),
+          ...formData,
+          time: new Date().toLocaleString(), // Data e hora do envio
         },
         publicKey
       );
 
       toast.success("Mensagem enviada com sucesso!");
-      setFormData({ name: "", email: "", subject: "", message: "" });
+      setFormData({ name: "", email: "", subject: "", message: "" }); // Limpa o formulário
     } catch (error) {
-      console.error("Erro EmailJS:", error);
+      console.error("Erro ao enviar:", error);
+      toast.error("Falha ao enviar mensagem.");
     } finally {
       setSending(false);
     }
   };
 
+  // Atualiza os campos do formulário
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -55,15 +61,19 @@ export default function Contact() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Controle de foco para estilização dos labels
   const handleFocus = (fieldName: string) => setFocusedField(fieldName);
   const handleBlur = () => setFocusedField(null);
 
-  const inputStyles =
-    "w-full px-4 py-2 rounded-xl bg-white/5 border border-white/10 " +
-    "text-white placeholder-white/50 transition-all duration-300 " +
-    "focus:outline-none focus:ring-1 focus:ring-[#00ff9d] focus:border-[#00ff9d] " +
-    "hover:bg-white/10 focus:bg-white/10";
+  // Estilo base dos inputs e textareas
+  const inputStyles = `
+    w-full px-4 py-2 rounded-xl bg-white/5 border border-white/10
+    text-white placeholder-white/50 transition-all duration-300
+    focus:outline-none focus:ring-1 focus:ring-[#00ff9d] focus:border-[#00ff9d]
+    hover:bg-white/10 focus:bg-white/10
+  `;
 
+  // Animações com Framer Motion
   const fadeUp = {
     hidden: { opacity: 0, y: 32 },
     show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
@@ -90,9 +100,26 @@ export default function Contact() {
     },
   };
 
+  // Dados dos campos do formulário
+  const fields = [
+    {
+      id: "name",
+      label: "Nome",
+      type: "text",
+      placeholder: "Seu nome",
+    },
+    {
+      id: "email",
+      label: "Email",
+      type: "email",
+      placeholder: "seu@email.com",
+    },
+  ];
+
   return (
     <>
       <Toaster position="top-right" />
+
       <section
         id="contato"
         className="min-h-screen flex items-center justify-center py-24 px-4 overflow-hidden bg-transparent"
@@ -106,6 +133,7 @@ export default function Contact() {
             className="rounded-3xl bg-[#181818]/90 border border-[#00ff9d]/10 shadow-2xl px-6 sm:px-12 py-12 md:py-20 flex flex-col justify-center min-h-[70vh]"
           >
             <div className="container max-w-3xl mx-auto">
+              {/* Cabeçalho */}
               <motion.div
                 className="text-center mb-10"
                 variants={staggerContainer}
@@ -129,6 +157,7 @@ export default function Contact() {
                 </motion.p>
               </motion.div>
 
+              {/* Formulário */}
               <motion.form
                 onSubmit={handleSubmit}
                 className="space-y-5"
@@ -137,24 +166,12 @@ export default function Contact() {
                 whileInView="show"
                 viewport={{ once: true, amount: 0.2 }}
               >
+                {/* Inputs nome e email */}
                 <motion.div
                   className="grid grid-cols-1 md:grid-cols-2 gap-5"
                   variants={staggerContainer}
                 >
-                  {[
-                    {
-                      id: "name",
-                      label: "Nome",
-                      type: "text",
-                      placeholder: "Seu nome",
-                    },
-                    {
-                      id: "email",
-                      label: "Email",
-                      type: "email",
-                      placeholder: "seu@email.com",
-                    },
-                  ].map(({ id, label, type, placeholder }) => (
+                  {fields.map(({ id, label, type, placeholder }) => (
                     <motion.div
                       key={id}
                       className="space-y-1.5"
@@ -184,6 +201,7 @@ export default function Contact() {
                   ))}
                 </motion.div>
 
+                {/* Campo assunto */}
                 <motion.div className="space-y-1.5" variants={formItemVariants}>
                   <label
                     htmlFor="subject"
@@ -207,6 +225,7 @@ export default function Contact() {
                   />
                 </motion.div>
 
+                {/* Campo mensagem */}
                 <motion.div className="space-y-1.5" variants={formItemVariants}>
                   <label
                     htmlFor="message"
@@ -230,6 +249,7 @@ export default function Contact() {
                   />
                 </motion.div>
 
+                {/* Botão enviar */}
                 <motion.div
                   variants={formItemVariants}
                   whileHover={{ scale: 1.02 }}
@@ -244,9 +264,26 @@ export default function Contact() {
                   >
                     {sending ? (
                       <>
-                        <svg className="animate-spin h-5 w-5 mr-2 text-[#121212]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                        {/* Spinner de carregamento */}
+                        <svg
+                          className="animate-spin h-5 w-5 mr-2 text-[#121212]"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                          />
                         </svg>
                         <span className="relative z-10">Enviando...</span>
                       </>
@@ -260,6 +297,7 @@ export default function Contact() {
                         <span className="relative z-10">Enviar Mensagem</span>
                       </>
                     )}
+                    {/* Efeito de brilho no hover */}
                     <div
                       className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent
                            translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-[1200ms] ease-in-out"
