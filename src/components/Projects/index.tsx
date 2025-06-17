@@ -4,6 +4,7 @@ import ProjectCard, { Project } from "@/components/Projects/ProjectCard";
 import { motion } from "framer-motion";
 import React from "react";
 
+// Lista de projetos exibidos na seção
 const projects: Project[] = [
   {
     title: "Darker UI",
@@ -65,9 +66,10 @@ const projects: Project[] = [
     previewUrl: "https://gusttazy.github.io/api-cep/",
     repositoryUrl: "https://github.com/gusttazy/api-cep",
   },
-  // Adicione mais projetos aqui
+  // Possível expansão futura: novos projetos adicionados aqui.
 ];
 
+// Animações para o container da seção (controla o efeito de stagger nos elementos filhos)
 const containerVariants = {
   hidden: {},
   show: {
@@ -79,6 +81,7 @@ const containerVariants = {
   },
 };
 
+// Animação de entrada (fade e movimento para cima)
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
   show: {
@@ -88,6 +91,7 @@ const fadeUp = {
   },
 };
 
+// Animação específica para os cards de projeto
 const cardVariants = {
   hidden: { opacity: 0, y: 36, scale: 0.95, filter: "blur(6px)" },
   show: {
@@ -99,6 +103,7 @@ const cardVariants = {
   },
 };
 
+// Componente principal da seção de projetos
 export default React.memo(function Projects() {
   return (
     <section
@@ -106,7 +111,7 @@ export default React.memo(function Projects() {
       className="min-h-screen flex items-center justify-center py-16 px-4"
     >
       <div className="container mx-auto max-w-7xl">
-        {/* Cabeçalho */}
+        {/* Cabeçalho da seção */}
         <motion.div
           className="text-center mb-12"
           variants={containerVariants}
@@ -136,7 +141,7 @@ export default React.memo(function Projects() {
           </motion.p>
         </motion.div>
 
-        {/* Grid de Projetos */}
+        {/* Grid que exibe os cards dos projetos */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch"
           variants={containerVariants}
@@ -144,11 +149,10 @@ export default React.memo(function Projects() {
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
         >
-          {projects.map((project, i) => (
+          {projects.map((project) => (
             <motion.div
               key={project.title}
               variants={cardVariants}
-              custom={i}
               className="h-full"
             >
               <ProjectCard project={project} />
@@ -159,6 +163,3 @@ export default React.memo(function Projects() {
     </section>
   );
 });
-
-// Exemplo de uso:
-// smoothScrollToTop();
