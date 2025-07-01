@@ -1,15 +1,16 @@
+
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
+import Navbar from "@/sections/Navbar";
+import Hero from "@/sections/Hero";
 import ClientNavButton from "@/components/NavButton/ClientNavButton";
 
 // Lazy load components pesados e não essenciais para o first paint
 const AnimatedBackground = dynamic(() => import("@/components/AnimatedBackground"));
-const Techs = dynamic(() => import("@/components/Techs"));
-const Projects = dynamic(() => import("@/components/Projects"));
-const Contact = dynamic(() => import("@/components/Contact"));
-const Footer = dynamic(() => import("@/components/Footer"));
+const Techs = dynamic(() => import("@/sections/Techs"));
+const Projects = dynamic(() => import("@/sections/Projects"));
+const Contact = dynamic(() => import("@/sections/Contact"));
+const Footer = dynamic(() => import("@/sections/Footer"));
 
 export default function App() {
   return (

@@ -122,7 +122,7 @@ export default function Contact() {
 
       <section
         id="contato"
-        className="min-h-screen flex items-center justify-center py-24 px-4 overflow-hidden bg-transparent"
+        className="min-h-screen flex items-center justify-center py-8 sm:py-24 px-2 sm:px-4 overflow-hidden bg-transparent"
       >
         <div className="w-full max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto">
           <motion.div
@@ -130,7 +130,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-3xl bg-[#181818]/90 border border-[#00ff9d]/10 shadow-2xl px-6 sm:px-12 py-12 md:py-20 flex flex-col justify-center min-h-[70vh]"
+            className="rounded-3xl bg-[#181818]/90 border border-[#00ff9d]/10 shadow-2xl px-3 sm:px-6 md:px-12 py-6 sm:py-12 md:py-20 flex flex-col justify-center min-h-[70vh]"
           >
             <div className="container max-w-3xl mx-auto">
               {/* Cabeçalho */}
@@ -142,7 +142,7 @@ export default function Contact() {
                 viewport={{ once: true, amount: 0.3 }}
               >
                 <motion.h2
-                  className="text-4xl font-bold bg-gradient-to-r from-[#00ff9d] to-[#00ff9d]/70 text-transparent bg-clip-text mb-3"
+                  className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-[#00ff9d] to-[#00ff9d]/70 text-transparent bg-clip-text mb-2 sm:mb-3"
                   variants={fadeUp}
                 >
                   Contato
@@ -168,7 +168,7 @@ export default function Contact() {
               >
                 {/* Inputs nome e email */}
                 <motion.div
-                  className="grid grid-cols-1 md:grid-cols-2 gap-5"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-5"
                   variants={staggerContainer}
                 >
                   {fields.map(({ id, label, type, placeholder }) => (
@@ -258,7 +258,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={sending}
-                    className="w-full sm:w-auto px-6 py-3 bg-[#00ff9d] text-[#121212] font-semibold text-base rounded-full
+                    className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-[#00ff9d] text-[#121212] font-semibold text-base rounded-full
                          hover:bg-[#00ff9d]/90 transition-all duration-300 flex items-center justify-center gap-2
                          relative overflow-hidden group hover:shadow-[0_0_20px_rgba(0,255,157,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
                   >

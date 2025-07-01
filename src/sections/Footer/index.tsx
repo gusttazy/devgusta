@@ -35,9 +35,9 @@ const Footer: FC = React.memo(function Footer() {
   }, []);
 
   return (
-    <footer className="w-full py-8 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a5b] border-t border-[#1a1a1a77]">
+    <footer className="w-full py-4 sm:py-8 px-2 sm:px-6 lg:px-8 bg-[#0a0a0a5b] border-t border-[#1a1a1a77]">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
           {/* Logo e Descrição */}
           <div className="space-y-4">
             <Link href="/" className="text-2xl font-bold text-white">
@@ -50,9 +50,9 @@ const Footer: FC = React.memo(function Footer() {
           </div>
 
           {/* Links Rápidos */}
-          <div className="space-y-4">
+          <div className="space-y-2 sm:space-y-4">
             <h3 className="text-white font-semibold">Links Rápidos</h3>
-            <ul className="space-y-2">
+            <ul className="space-y-1 sm:space-y-2">
               {categories.map(({ name }) => (
                 <li key={name}>
                   <button
@@ -115,7 +115,7 @@ const Footer: FC = React.memo(function Footer() {
 
         {/* Copyright */}
         <div className="text-center text-gray-400">
-          <p>© {currentYear} Portfolio. Todos os direitos reservados.</p>
+          <p>© {currentYear} DevGusta. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>

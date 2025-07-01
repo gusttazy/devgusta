@@ -3,14 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-
-// Mapeamento das categorias com seus IDs correspondentes
-const categories = [
-  { name: "Início", id: "inicio" },
-  { name: "Techs", id: "techs" },
-  { name: "Projetos", id: "projetos" },
-  { name: "Contato", id: "contato" },
-];
+import { categories } from "@/data/categories"; // Importa as categorias
 
 export default React.memo(function Navbar() {
   const [active, setActive] = useState("Início");
@@ -164,11 +157,7 @@ export default React.memo(function Navbar() {
             className="p-2 text-white/70 hover:text-[#00ff9d] transition-colors"
             aria-label="Abrir menu"
           >
-            {isOpen ? (
-              <FaTimes size={24} />
-            ) : (
-              <FaBars size={24} />
-            )}
+            {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </motion.button>
           <span className="text-[#00ff9d] font-medium">{active}</span>
           <div className="w-8" />

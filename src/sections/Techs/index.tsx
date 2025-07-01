@@ -1,39 +1,9 @@
 "use client";
 
-// Importação dos ícones das tecnologias
-import {
-  SiHtml5,
-  SiCss3,
-  SiJavascript,
-  SiTypescript,
-  SiReact,
-  SiNodedotjs,
-  SiNextdotjs,
-  SiSupabase,
-  SiStyledcomponents,
-  SiTailwindcss,
-  SiPostgresql,
-} from "react-icons/si";
-
 // Importação de animações com Framer Motion
 import { motion } from "framer-motion";
 import React from "react";
-
-// Lista de tecnologias com nome e ícone associado
-const techs = [
-  { name: "HTML5", icon: SiHtml5 },
-  { name: "CSS3", icon: SiCss3 },
-  { name: "JavaScript", icon: SiJavascript },
-  { name: "TypeScript", icon: SiTypescript },
-  { name: "React", icon: SiReact },
-  { name: "React Native", icon: SiReact },
-  { name: "Node.js", icon: SiNodedotjs },
-  { name: "Next.js", icon: SiNextdotjs },
-  { name: "PostgreSQL", icon: SiPostgresql },
-  { name: "Supabase", icon: SiSupabase },
-  { name: "Styled Components", icon: SiStyledcomponents },
-  { name: "Tailwind CSS", icon: SiTailwindcss },
-];
+import { techs } from "@/data/techs"; // Importa a lista de tecnologias
 
 // Variantes para animação do container (stagger effect)
 // Faz com que os filhos sejam animados em sequência
@@ -70,10 +40,10 @@ const cardVariants = {
 // Componente principal de Tecnologias
 export default function Techs() {
   return (
-    <section id="techs" className="py-24 px-4 min-h-[60vh] overflow-hidden">
-      <div className="max-w-6xl mx-auto text-center">
+    <section id="techs" className="py-12 sm:py-24 px-2 sm:px-4 min-h-[60vh] overflow-hidden">
+      <div className="max-w-6xl mx-auto text-center px-2 sm:px-4">
         {/* Título */}
-        <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-[#00ff9d] to-[#00ff9d]/70 text-transparent bg-clip-text">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-[#00ff9d] to-[#00ff9d]/70 text-transparent bg-clip-text">
           Tecnologias
         </h2>
 
@@ -85,7 +55,7 @@ export default function Techs() {
 
         {/* Grid de tecnologias com animação */}
         <motion.div
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6"
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
@@ -94,22 +64,23 @@ export default function Techs() {
           {techs.map((tech) => (
             <motion.div
               key={tech.name}
-              className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center backdrop-blur-lg shadow-lg hover:shadow-[#00ff9d]/30 transition-all duration-200"
+              className="relative group bg-gradient-to-br from-[#181818] via-[#232323] to-[#1e1e1e] border border-[#00ff9d]/10 rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center shadow-none hover:shadow-[0_4px_32px_rgba(0,255,157,0.10)] transition-all duration-300 overflow-hidden"
               variants={cardVariants}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.07 }}
               whileTap={{ scale: 0.97 }}
             >
+              {/* Glow efeito ao fundo no hover */}
+              <span className="absolute inset-0 z-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#00ff9d33] via-transparent to-transparent pointer-events-none" />
               {/* Ícone com animação no hover */}
               <motion.div
-                className="text-[#00ff9d] mb-2"
-                whileHover={{ scale: 1.2 }}
-                transition={{ type: "spring", stiffness: 300 }}
+                className="relative z-10 text-[#00ff9d] mb-3 flex items-center justify-center bg-[#00ff9d]/10 rounded-full p-3 shadow-inner group-hover:scale-110 transition-transform duration-300"
+                whileHover={{ scale: 1.18 }}
+                transition={{ type: 'spring', stiffness: 300 }}
               >
-                {React.createElement(tech.icon, { size: 40 })}
+                {React.createElement(tech.icon, { size: 36 })}
               </motion.div>
-
               {/* Nome da tecnologia */}
-              <span className="text-sm text-white/80 font-medium tracking-wide text-center">
+              <span className="relative z-10 text-base text-white/90 font-semibold tracking-wide text-center mt-1">
                 {tech.name}
               </span>
             </motion.div>

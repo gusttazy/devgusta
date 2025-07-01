@@ -62,17 +62,17 @@ export default React.memo(function Hero() {
       id="inicio"
       className="min-h-[calc(100vh-4rem)] flex items-center justify-center pt-8 pb-4 sm:pt-10 sm:pb-6 lg:pt-12 lg:pb-8"
     >
-      <div className="container mx-auto max-w-7xl flex flex-col-reverse lg:flex-row items-center justify-between gap-12 px-4 sm:px-6">
+      <div className="container mx-auto max-w-7xl flex flex-col-reverse lg:flex-row items-center justify-between gap-6 sm:gap-10 lg:gap-12 px-2 sm:px-6">
         {/* Coluna da Esquerda - Conteúdo textual */}
         <motion.div
-          className="space-y-4 sm:space-y-6"
+          className="space-y-3 sm:space-y-5 lg:space-y-6"
           variants={containerVariants}
           initial="hidden"
           animate="show"
         >
           {/* Título principal */}
           <motion.h1
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-[#00ff9d] to-[#00ff9d]/70 text-transparent bg-clip-text leading-tight"
+            className="text-3xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-[#00ff9d] to-[#00ff9d]/70 text-transparent bg-clip-text leading-tight"
             variants={fadeUp}
             whileHover={{
               scale: 1.03,
@@ -95,7 +95,7 @@ export default React.memo(function Hero() {
           </motion.p>
           {/* Botões de ação e redes sociais */}
           <motion.div
-            className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6"
+            className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 lg:gap-6"
             variants={containerVariants}
           >
             {/* Botão para baixar currículo */}
@@ -126,7 +126,7 @@ export default React.memo(function Hero() {
             </motion.a>
             {/* Ícones das redes sociais */}
             <motion.div
-              className="flex items-center gap-4"
+              className="flex items-center gap-2 sm:gap-4"
               variants={containerVariants}
             >
               {socialLinks.map((link, i) => {
