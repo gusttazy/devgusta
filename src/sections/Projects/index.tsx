@@ -52,9 +52,9 @@ export default React.memo(function Projects() {
   return (
     <section
       id="projetos"
-      className="relative min-h-screen flex items-center justify-center py-16 sm:py-28 px-4 sm:px-6 overflow-hidden"
+      className="relative min-h-screen scroll-mt-16 flex items-center justify-center py-20 sm:py-32 px-4 sm:px-6 overflow-hidden"
     >
-      <div className="relative container mx-auto max-w-7xl">
+      <div className="relative container mx-auto max-w-7xl w-full">
         {/* Header Section */}
         <motion.div
           className="text-center mb-16 sm:mb-20"
@@ -169,24 +169,7 @@ export default React.memo(function Projects() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.6 }}
-        >
-          <div className="inline-flex flex-col items-center gap-4">
-            <div className="flex items-center gap-2 text-white/50 text-sm">
-              <div className="h-px w-12 bg-gradient-to-r from-transparent to-white/30" />
-              <span>Mais projetos em breve</span>
-              <div className="h-px w-12 bg-gradient-to-l from-transparent to-white/30" />
-            </div>
-
-            {/* Call to action sutil */}
-            <motion.div
-              className="text-white/40 text-xs"
-              animate={{ opacity: [0.4, 0.7, 0.4] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            >
-              Scroll para explorar ↓
-            </motion.div>
-          </div>
-        </motion.div>
+        ></motion.div>
       </div>
     </section>
   );

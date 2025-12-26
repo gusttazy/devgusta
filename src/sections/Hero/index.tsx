@@ -60,7 +60,6 @@ export default React.memo(function Hero() {
       id="inicio"
       className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden px-4 sm:px-6"
     >
-
       {/* Grid decorativo */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_80%)] pointer-events-none" />
 
@@ -107,8 +106,8 @@ export default React.memo(function Hero() {
         {/* Botão de download do CV */}
         <motion.div variants={fadeUp}>
           <a
-            href="/cv.pdf"
-            download
+            href="/curriculo.pdf"
+            download="Gustavo_Aguiar_CV.pdf"
             className="group relative inline-flex items-center gap-2 px-8 py-4 bg-[#00ff9d] text-[#121212] rounded-full font-semibold text-base overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,255,157,0.4)] hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#00ff9d] focus:ring-offset-2 focus:ring-offset-[#121212]"
           >
             {/* Efeito de brilho no hover */}

@@ -159,13 +159,7 @@ export default function Techs() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.6 }}
-        >
-          <div className="inline-flex items-center gap-2 text-white/50 text-sm">
-            <div className="h-px w-8 bg-gradient-to-r from-transparent to-white/30" />
-            <span>Em constante evolução</span>
-            <div className="h-px w-8 bg-gradient-to-l from-transparent to-white/30" />
-          </div>
-        </motion.div>
+        ></motion.div>
       </div>
     </section>
   );

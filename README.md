@@ -6,14 +6,6 @@ Este projeto foi desenvolvido com o objetivo de apresentar minhas **principais h
 
 ---
 
-## 🎥 **Preview do Projeto**
-
-<div align="center">
-  <img src="./public/preview.gif" alt="Preview do DevGusta Portfolio" />
-</div>
-
----
-
 ## 🚀 **Tecnologias Utilizadas**
 
 * ⚛️ [Next.js](https://nextjs.org/)
