@@ -23,9 +23,6 @@ Este projeto foi desenvolvido com o objetivo de apresentar minhas **principais h
 * 🚀 Seção de tecnologias e stacks
 * 🗂️ Listagem de projetos com preview e link para repositórios
 * ✉️ **Formulário de contato funcional utilizando EmailJS para envio de mensagens sem backend**
-* 🎨 **Design dinâmico e imersivo com animações 3D interativas usando Three.js**
-* 🌟 **Experiência visual única com elementos 3D que respondem à interação do usuário**
-* ⚡ Loader customizado para uma experiência fluida
 
 ---
 
