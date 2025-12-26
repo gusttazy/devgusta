@@ -29,24 +29,4 @@ Este projeto foi desenvolvido com o objetivo de apresentar minhas **principais h
 
 ---
 
-## 📁 **Estrutura do Projeto**
-
-```plaintext
-.
-├── src
-│   ├── app          # Páginas e layout principal
-│   ├── components   # Componentes reutilizáveis
-│   └── public
-│       └── images   # Imagens dos projetos e avatar
-```
-
----
-
-## 📝 **Licença**
-
-Este projeto está sob a licença **MIT**.
-📄 Veja mais detalhes no arquivo [LICENSE](LICENSE).
-
----
-
-> ✨ Projeto desenvolvido com ❤️ por **Gustavo Aguiar** — 2025.
+✨ Projeto desenvolvido com ❤️ por **Gustavo Aguiar** — 2025.
