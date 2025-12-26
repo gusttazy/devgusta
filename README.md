@@ -11,7 +11,6 @@ Este projeto foi desenvolvido com o objetivo de apresentar minhas **principais h
 * ⚛️ [Next.js](https://nextjs.org/)
 * ⚛️ [React](https://react.dev/)
 * 🟦 [TypeScript](https://www.typescriptlang.org/)
-* 🎮 [Three.js](https://threejs.org/)
 * 🎨 [Tailwind CSS](https://tailwindcss.com/)
 * 🎞️ [Framer Motion](https://www.framer.com/motion/)
 * 📧 [EmailJS](https://www.emailjs.com/)
