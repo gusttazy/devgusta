@@ -78,10 +78,10 @@ export default function Techs() {
 
           {/* Título com gradiente */}
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5">
-            <span className="bg-gradient-to-r from-white via-white/90 to-white/70 text-transparent bg-clip-text">
+            <span className="bg-linear-to-r from-white via-white/90 to-white/70 text-transparent bg-clip-text">
               Tecnologias &{" "}
             </span>
-            <span className="bg-gradient-to-r from-[#00ff9d] via-[#00ffcc] to-[#00ff9d] text-transparent bg-clip-text">
+            <span className="bg-linear-to-r from-[#00ff9d] via-[#00ffcc] to-[#00ff9d] text-transparent bg-clip-text">
               Ferramentas
             </span>
           </h2>
@@ -110,14 +110,14 @@ export default function Techs() {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               {/* Card principal */}
-              <div className="relative bg-gradient-to-br from-[#1a1a1a] via-[#252525] to-[#1a1a1a] border border-white/10 rounded-2xl p-5 sm:p-6 flex flex-col items-center justify-center h-full overflow-hidden transition-all duration-300 group-hover:border-[#00ff9d]/40 group-hover:shadow-[0_8px_40px_rgba(0,255,157,0.15)]">
+              <div className="relative bg-linear-to-br from-[#1a1a1a] via-[#252525] to-[#1a1a1a] border border-white/10 rounded-2xl p-5 sm:p-6 flex flex-col items-center justify-center h-full overflow-hidden transition-all duration-300 group-hover:border-[#00ff9d]/40 group-hover:shadow-[0_8px_40px_rgba(0,255,157,0.15)]">
                 {/* Efeito de brilho no hover */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-[#00ff9d] to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#00ff9d]/5 via-transparent to-transparent" />
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-linear-to-r from-transparent via-[#00ff9d] to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-b from-[#00ff9d]/5 via-transparent to-transparent" />
                 </div>
 
-                {/* Número do index (decorativo) */}
+                {/* Número do index */}
                 <div className="absolute top-2 right-2 text-[#00ff9d]/20 text-xs font-mono group-hover:text-[#00ff9d]/40 transition-colors">
                   {String(index + 1).padStart(2, "0")}
                 </div>
@@ -141,7 +141,7 @@ export default function Techs() {
 
                 {/* Indicador de hover */}
                 <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00ff9d] to-[#00ffcc]"
+                  className="absolute bottom-0 left-0 right-0 h-1 bg-linear-to-r from-[#00ff9d] to-[#00ffcc]"
                   initial={{ scaleX: 0 }}
                   whileHover={{ scaleX: 1 }}
                   transition={{ duration: 0.3 }}
@@ -151,15 +151,6 @@ export default function Techs() {
             </motion.div>
           ))}
         </motion.div>
-
-        {/* Footer decorativo */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-        ></motion.div>
       </div>
     </section>
   );

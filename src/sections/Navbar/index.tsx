@@ -69,28 +69,20 @@ export default React.memo(function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Intersection Observer melhorado
   useEffect(() => {
     let updateTimeout: NodeJS.Timeout;
 
     observerRef.current = new IntersectionObserver(
       (entries) => {
         if (isScrolling.current) return;
-
-        // Filtra apenas entradas visíveis
         const visibleEntries = entries.filter(
           (entry) => entry.isIntersecting && entry.intersectionRatio > 0
         );
 
         if (visibleEntries.length === 0) return;
-
-        // Encontra a seção com maior visibilidade
         const mostVisible = visibleEntries.reduce((prev, current) => {
           const prevRatio = prev.intersectionRatio;
           const currentRatio = current.intersectionRatio;
-
-          // Se estão muito próximos, prefere o que está mais acima
           if (Math.abs(prevRatio - currentRatio) < 0.1) {
             return prev.boundingClientRect.top < current.boundingClientRect.top
               ? prev
@@ -118,7 +110,6 @@ export default React.memo(function Navbar() {
         }, 150);
       },
       {
-        // Ajuste mais permissivo para detectar todas as seções
         rootMargin: "-10% 0px -40% 0px",
         threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
       }
@@ -213,7 +204,7 @@ export default React.memo(function Navbar() {
           <div className="relative flex space-x-2 bg-[#1e1e1e]/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg border border-white/10 mx-auto">
             {/* Indicador de background com animação suave */}
             <motion.div
-              className="absolute h-[calc(100%-8px)] top-1 bg-gradient-to-r from-[#00ff9d]/30 to-[#00ff9d]/10 rounded-full shadow-[0_0_15px_rgba(0,255,157,0.2)]"
+              className="absolute h-[calc(100%-8px)] top-1 bg-linear-to-r from-[#00ff9d]/30 to-[#00ff9d]/10 rounded-full shadow-[0_0_15px_rgba(0,255,157,0.2)]"
               style={indicatorStyle}
               layoutId="navbar-indicator"
             />
@@ -265,7 +256,7 @@ export default React.memo(function Navbar() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="fixed inset-x-0 top-[72px] bg-[#1e1e1e]/98 backdrop-blur-lg md:hidden border-t border-white/5 shadow-2xl"
+              className="fixed inset-x-0 top-18 bg-[#1e1e1e]/98 backdrop-blur-lg md:hidden border-t border-white/5 shadow-2xl"
               initial="hidden"
               animate="visible"
               exit="exit"

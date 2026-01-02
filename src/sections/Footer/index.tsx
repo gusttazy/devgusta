@@ -1,10 +1,15 @@
 "use client";
 
-import React, { FC, useCallback } from "react";
+import { FC, memo, useCallback } from "react";
 import Link from "next/link";
-import { FaGithub, FaLinkedin, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import {
+  GithubIcon,
+  LinkedinIcon,
+  InstagramIcon,
+  MessageCircle,
+} from "lucide-react";
 
-// Mapeamento das categorias com seus IDs correspondentes (mesmo da Navbar)
+// Categorias (mesmos IDs da Navbar)
 const categories = [
   { name: "Início", id: "inicio" },
   { name: "Techs", id: "techs" },
@@ -12,33 +17,36 @@ const categories = [
   { name: "Contato", id: "contato" },
 ];
 
-const Footer: FC = React.memo(function Footer() {
+const Footer: FC = memo(() => {
   const currentYear = new Date().getFullYear();
 
-  // Função para navegação suave (mesma lógica da Navbar)
+  // Scroll suave para seções
   const scrollToSection = useCallback((categoryName: string) => {
     const category = categories.find((cat) => cat.name === categoryName);
-    if (category) {
-      const element = document.getElementById(category.id);
-      if (element) {
-        const navbarHeight = 96; // altura aproximada da navbar + padding
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition =
-          elementPosition + window.pageYOffset - navbarHeight;
+    if (!category) return;
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
-      }
-    }
+    const element = document.getElementById(category.id);
+    if (!element) return;
+
+    const navbarHeight = 96;
+    const offsetPosition =
+      element.getBoundingClientRect().top +
+      window.pageYOffset -
+      navbarHeight;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
   }, []);
 
   return (
-    <footer className="w-full py-4 sm:py-8 px-2 sm:px-6 lg:px-8 bg-[#0a0a0a5b] border-t border-[#1a1a1a77]">
+    <footer className="w-full py-4 sm:py-8 px-2 sm:px-6 lg:px-8
+      bg-[#0a0a0a5b] border-t border-[#1a1a1a77]"
+    >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
-          {/* Logo e Descrição */}
+          {/* Logo */}
           <div className="space-y-4">
             <Link href="/" className="text-2xl font-bold text-white">
               DevGusta
@@ -49,7 +57,7 @@ const Footer: FC = React.memo(function Footer() {
             </p>
           </div>
 
-          {/* Links Rápidos */}
+          {/* Links rápidos */}
           <div className="space-y-2 sm:space-y-4">
             <h3 className="text-white font-semibold">Links Rápidos</h3>
             <ul className="space-y-1 sm:space-y-2">
@@ -66,7 +74,7 @@ const Footer: FC = React.memo(function Footer() {
             </ul>
           </div>
 
-          {/* Redes Sociais */}
+          {/* Redes sociais */}
           <div className="space-y-4">
             <h3 className="text-white font-semibold">Redes Sociais</h3>
             <div className="flex space-x-4">
@@ -74,53 +82,57 @@ const Footer: FC = React.memo(function Footer() {
                 href="https://www.linkedin.com/in/gustaguiar/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
                 aria-label="LinkedIn"
+                className="text-gray-400 hover:text-white transition-colors"
               >
-                <FaLinkedin size={24} />
+                <LinkedinIcon className="w-6 h-6" />
               </a>
+
               <a
                 href="https://github.com/gusttazy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
                 aria-label="GitHub"
+                className="text-gray-400 hover:text-white transition-colors"
               >
-                <FaGithub size={24} />
+                <GithubIcon className="w-6 h-6" />
               </a>
+
               <a
                 href="https://www.instagram.com/gusttazy/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
                 aria-label="Instagram"
+                className="text-gray-400 hover:text-white transition-colors"
               >
-                <FaInstagram size={24} />
+                <InstagramIcon className="w-6 h-6" />
               </a>
+
               <a
                 href="https://wa.me/5592992279956"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
                 aria-label="WhatsApp"
+                className="text-gray-400 hover:text-white transition-colors"
               >
-                <FaWhatsapp size={24} />
+                <MessageCircle className="w-6 h-6" />
               </a>
             </div>
           </div>
         </div>
 
-        {/* Linha Divisória */}
+        {/* Divider */}
         <div className="border-t border-[#1A1A1A] my-8" />
 
         {/* Copyright */}
-        <div className="text-center text-gray-400">
-          <p>© {currentYear} DevGusta. Todos os direitos reservados.</p>
+        <div className="text-center text-gray-400 text-sm">
+          © {currentYear} DevGusta. Todos os direitos reservados.
         </div>
       </div>
     </footer>
   );
 });
+
 Footer.displayName = "Footer";
 
 export default Footer;

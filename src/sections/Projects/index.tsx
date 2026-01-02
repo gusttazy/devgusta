@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React from "react";
+import { memo } from "react";
 import { projects } from "@/data/projects";
 import ProjectCard from "@/components/ProjectCard";
 
-// Variantes de animação para o container
+// Variantes de animação
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
@@ -17,26 +17,17 @@ const containerVariants = {
   },
 };
 
-// Animação do header
 const headerVariants = {
   hidden: { opacity: 0, y: -20 },
   show: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
+    transition: { duration: 0.6, ease: "easeOut" },
   },
 };
 
-// Animação dos cards de projeto
 const cardVariants = {
-  hidden: {
-    opacity: 0,
-    y: 40,
-    scale: 0.95,
-  },
+  hidden: { opacity: 0, y: 40, scale: 0.95 },
   show: {
     opacity: 1,
     y: 0,
@@ -48,14 +39,15 @@ const cardVariants = {
   },
 };
 
-export default React.memo(function Projects() {
+const Projects = () => {
   return (
     <section
       id="projetos"
-      className="relative min-h-screen scroll-mt-16 flex items-center justify-center py-20 sm:py-32 px-4 sm:px-6 overflow-hidden"
+      className="relative min-h-screen scroll-mt-16 flex items-center justify-center
+        py-20 sm:py-32 px-4 sm:px-6 overflow-hidden"
     >
       <div className="relative container mx-auto max-w-7xl w-full">
-        {/* Header Section */}
+        {/* Header */}
         <motion.div
           className="text-center mb-16 sm:mb-20"
           variants={headerVariants}
@@ -63,9 +55,10 @@ export default React.memo(function Projects() {
           whileInView="show"
           viewport={{ once: true }}
         >
-          {/* Badge decorativo */}
+          {/* Badge */}
           <motion.div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00ff9d]/10 border border-[#00ff9d]/20 mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full
+              bg-[#00ff9d]/10 border border-[#00ff9d]/20 mb-6"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -77,12 +70,12 @@ export default React.memo(function Projects() {
             </span>
           </motion.div>
 
-          {/* Título com gradiente */}
+          {/* Título */}
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5">
-            <span className="bg-gradient-to-r from-white via-white/90 to-white/70 text-transparent bg-clip-text">
+            <span className="bg-linear-to-r from-white via-white/90 to-white/70 text-transparent bg-clip-text">
               Meus{" "}
             </span>
-            <span className="bg-gradient-to-r from-[#00ff9d] via-[#00ffcc] to-[#00ff9d] text-transparent bg-clip-text">
+            <span className="bg-linear-to-r from-[#00ff9d] via-[#00ffcc] to-[#00ff9d] text-transparent bg-clip-text">
               Projetos
             </span>
           </h2>
@@ -97,7 +90,7 @@ export default React.memo(function Projects() {
             .
           </p>
 
-          {/* Estatísticas decorativas */}
+          {/* Estatísticas */}
           <motion.div
             className="flex items-center justify-center gap-8 sm:gap-12 mt-10"
             initial={{ opacity: 0, y: 20 }}
@@ -111,14 +104,18 @@ export default React.memo(function Projects() {
               </div>
               <div className="text-xs sm:text-sm text-white/60">Projetos</div>
             </div>
-            <div className="w-px h-12 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+
+            <div className="w-px h-12 bg-linear-to-b from-transparent via-white/20 to-transparent" />
+
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-bold text-[#00ff9d] mb-1">
                 100%
               </div>
               <div className="text-xs sm:text-sm text-white/60">Dedicação</div>
             </div>
-            <div className="w-px h-12 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+
+            <div className="w-px h-12 bg-linear-to-b from-transparent via-white/20 to-transparent" />
+
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-bold text-[#00ff9d] mb-1">
                 ∞
@@ -130,7 +127,7 @@ export default React.memo(function Projects() {
           </motion.div>
         </motion.div>
 
-        {/* Grid de projetos */}
+        {/* Lista de projetos */}
         <motion.div
           className="flex flex-col items-center gap-6 sm:gap-8 w-full"
           variants={containerVariants}
@@ -146,31 +143,27 @@ export default React.memo(function Projects() {
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
             >
-              {/* Wrapper */}
               <div className="relative">
-                {/* Número do projeto (decorativo) */}
-                <div className="absolute -top-4 -left-4 z-10 w-12 h-12 bg-gradient-to-br from-[#00ff9d] to-[#00ffcc] rounded-full flex items-center justify-center text-[#121212] font-bold text-lg shadow-lg shadow-[#00ff9d]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Índice */}
+                <div
+                  className="absolute -top-4 -left-4 z-10 w-12 h-12
+                  bg-linear-to-br from-[#00ff9d] to-[#00ffcc]
+                  rounded-full flex items-center justify-center
+                  text-[#121212] font-bold text-lg
+                  shadow-lg shadow-[#00ff9d]/30
+                  opacity-0 group-hover:opacity-100 transition-opacity"
+                >
                   {String(index + 1).padStart(2, "0")}
                 </div>
 
-                {/* Card do projeto */}
-                <div className="relative">
-                  <ProjectCard project={project} />
-                </div>
+                <ProjectCard project={project} />
               </div>
             </motion.div>
           ))}
         </motion.div>
-
-        {/* Footer decorativo */}
-        <motion.div
-          className="mt-20 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-        ></motion.div>
       </div>
     </section>
   );
-});
+};
+
+export default memo(Projects);
