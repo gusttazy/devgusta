@@ -194,9 +194,7 @@ export default React.memo(function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 py-4 transition-all duration-300 ${
-        isScrolled || isOpen ? "bg-[#0a0a0a]/15 backdrop-blur-sm shadow-sm" : ""
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 py-4 transition-all duration-300`}
     >
       <nav className="container mx-auto max-w-7xl flex items-center justify-center px-4">
         {/* Menu Desktop */}
@@ -217,11 +215,10 @@ export default React.memo(function Navbar() {
                   buttonsRef.current[name] = el;
                 }}
                 onClick={() => scrollToSection(name)}
-                className={`relative z-10 px-6 py-2 rounded-full text-sm transition-colors duration-300 ease-in-out ${
-                  active === name
+                className={`relative z-10 px-6 py-2 rounded-full text-sm transition-colors duration-300 ease-in-out ${active === name
                     ? "text-[#00ff9d] font-medium"
                     : "text-white/60 hover:text-white/90"
-                }`}
+                  }`}
                 aria-current={active === name ? "page" : undefined}
               >
                 {name}
@@ -270,11 +267,10 @@ export default React.memo(function Navbar() {
                   <motion.button
                     key={category.name}
                     onClick={() => scrollToSection(category.name)}
-                    className={`w-full px-4 py-3 text-left text-base rounded-lg transition-all ${
-                      active === category.name
+                    className={`w-full px-4 py-3 text-left text-base rounded-lg transition-all ${active === category.name
                         ? "text-[#00ff9d] font-semibold bg-[#00ff9d]/10"
                         : "text-white/70 hover:text-white hover:bg-white/5"
-                    }`}
+                      }`}
                     variants={mobileItemVariants}
                     whileTap={{ scale: 0.98 }}
                     type="button"
