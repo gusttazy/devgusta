@@ -42,7 +42,7 @@ const cardVariants = {
 const Projects = () => {
   return (
     <section
-      id="projetos"
+      id="projects"
       className="relative min-h-screen scroll-mt-16 flex items-center justify-center
         py-20 sm:py-32 px-4 sm:px-6 overflow-hidden"
     >
