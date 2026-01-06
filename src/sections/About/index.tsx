@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { MapPin, GraduationCap, Code2, ArrowUpRight, User } from "lucide-react";
-import Image from "next/image"; // Importante: use Image do Next se tiver a foto
 
 export default function About() {
     return (
@@ -67,7 +66,7 @@ export default function About() {
                                 <ArrowUpRight size={18} />
                             </a>
                             <div className="text-zinc-500 text-sm font-mono">
-                 // 21 anos
+                                {/* 21 anos */}
                             </div>
                         </div>
                     </motion.div>
@@ -136,7 +135,7 @@ export default function About() {
                                 Evolução Constante
                             </h4>
                             <p className="text-zinc-400 text-sm leading-relaxed">
-                                "A tecnologia é o meio, a solução é o fim. Busco sempre criar experiências que impactem positivamente a vida das pessoas através do código."
+                                &quot;A tecnologia é o meio, a solução é o fim. Busco sempre criar experiências que impactem positivamente a vida das pessoas através do código.&quot;
                             </p>
                         </div>
                     </motion.div>

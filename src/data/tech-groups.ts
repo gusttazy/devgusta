@@ -1,21 +1,22 @@
 import { Layout, Smartphone, Server, Workflow } from "lucide-react";
-import { 
-  SiHtml5, SiCss3, SiJavascript, SiTypescript, SiReact, 
-  SiTailwindcss, SiNextdotjs, SiBootstrap, SiNodedotjs, 
-  SiPython, SiPostgresql, SiSupabase, SiExpo, 
-  SiDocker, SiGit, SiPostman, SiFigma 
+import {
+  SiHtml5, SiCss3, SiJavascript, SiTypescript, SiReact,
+  SiTailwindcss, SiNextdotjs, SiBootstrap, SiNodedotjs,
+  SiPython, SiPostgresql, SiSupabase, SiExpo,
+  SiDocker, SiGit, SiPostman, SiFigma
 } from "react-icons/si";
+import type { ElementType } from "react";
 
 export type TechItem = {
   name: string;
-  icon?: any;
+  icon?: ElementType;
 };
 
 export type TechGroup = {
   id: string;
   title: string;
   description: string;
-  icon: any;
+  icon: ElementType;
   colSpan: string;
   rowSpan?: string;
   techs: TechItem[];
@@ -60,7 +61,7 @@ export const techGroups: TechGroup[] = [
     techs: [
       { name: "Node.js", icon: SiNodedotjs },
       { name: "Python", icon: SiPython },
-      { name: "PostgreSQL", icon: SiPostgresql }, 
+      { name: "PostgreSQL", icon: SiPostgresql },
       { name: "Supabase", icon: SiSupabase },
     ],
   },
@@ -69,7 +70,7 @@ export const techGroups: TechGroup[] = [
     title: "DevOps & Tools",
     description: "Gerenciamento, design e deploy.",
     icon: Workflow,
-    colSpan: "md:col-span-2 lg:col-span-2", 
+    colSpan: "md:col-span-2 lg:col-span-2",
     techs: [
       { name: "Git", icon: SiGit },
       { name: "Docker", icon: SiDocker },

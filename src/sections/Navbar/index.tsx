@@ -9,7 +9,6 @@ export default React.memo(function Navbar() {
   const [active, setActive] = useState("Início");
   const [isOpen, setIsOpen] = useState(false);
   const [indicatorStyle, setIndicatorStyle] = useState({});
-  const [isScrolled, setIsScrolled] = useState(false);
 
   const buttonsRef = useRef<{ [key: string]: HTMLButtonElement | null }>({});
   const isScrolling = useRef<boolean>(false);
@@ -52,23 +51,7 @@ export default React.memo(function Navbar() {
     });
   }, [active]);
 
-  // Detecta scroll
-  useEffect(() => {
-    let ticking = false;
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 20);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
   useEffect(() => {
     let updateTimeout: NodeJS.Timeout;
 
@@ -216,8 +199,8 @@ export default React.memo(function Navbar() {
                 }}
                 onClick={() => scrollToSection(name)}
                 className={`relative z-10 px-6 py-2 rounded-full text-sm transition-colors duration-300 ease-in-out ${active === name
-                    ? "text-[#00ff9d] font-medium"
-                    : "text-white/60 hover:text-white/90"
+                  ? "text-[#00ff9d] font-medium"
+                  : "text-white/60 hover:text-white/90"
                   }`}
                 aria-current={active === name ? "page" : undefined}
               >
@@ -268,8 +251,8 @@ export default React.memo(function Navbar() {
                     key={category.name}
                     onClick={() => scrollToSection(category.name)}
                     className={`w-full px-4 py-3 text-left text-base rounded-lg transition-all ${active === category.name
-                        ? "text-[#00ff9d] font-semibold bg-[#00ff9d]/10"
-                        : "text-white/70 hover:text-white hover:bg-white/5"
+                      ? "text-[#00ff9d] font-semibold bg-[#00ff9d]/10"
+                      : "text-white/70 hover:text-white hover:bg-white/5"
                       }`}
                     variants={mobileItemVariants}
                     whileTap={{ scale: 0.98 }}
