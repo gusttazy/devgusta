@@ -73,52 +73,6 @@ const Footer: FC = memo(() => {
               ))}
             </ul>
           </div>
-
-          {/* Redes sociais */}
-          <div className="space-y-4">
-            <h3 className="text-white font-semibold">Redes Sociais</h3>
-            <div className="flex space-x-4">
-              <a
-                href="https://www.linkedin.com/in/gustaguiar/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <LinkedinIcon className="w-6 h-6" />
-              </a>
-
-              <a
-                href="https://github.com/gusttazy"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <GithubIcon className="w-6 h-6" />
-              </a>
-
-              <a
-                href="https://www.instagram.com/gusttazy/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <InstagramIcon className="w-6 h-6" />
-              </a>
-
-              <a
-                href="https://wa.me/5592992279956"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <MessageCircle className="w-6 h-6" />
-              </a>
-            </div>
-          </div>
         </div>
 
         {/* Divider */}

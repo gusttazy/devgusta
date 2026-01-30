@@ -8,7 +8,7 @@ export default function About() {
         <section id="about" className="relative py-20 px-4 sm:px-6 overflow-hidden">
             <div className="max-w-7xl mx-auto">
 
-                {/* HEADER ATUALIZADO (Estilo idêntico ao Tech Stack) */}
+                {/* HEADER */}
                 <motion.div
                     className="text-center mb-16"
                     initial={{ opacity: 0, y: -20 }}
@@ -59,8 +59,10 @@ export default function About() {
 
                         <div className="flex items-center gap-4">
                             <a
-                                href="#contact"
-                                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#00ff9d] text-black font-semibold hover:bg-[#00ff9d]/90"
+                                href="https://wa.me/5592992279956"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#00ff9d] text-black font-semibold hover:bg-[#00ff9d]/90 transition-colors"
                             >
                                 Vamos conversar
                                 <ArrowUpRight size={18} />
@@ -118,7 +120,7 @@ export default function About() {
                         </div>
                     </motion.div>
 
-                    {/* 4. CARD VISUAL (IMAGEM/SETUP) */}
+                    {/* 4. CARD VISUAL */}
                     <motion.div
                         initial={{ opacity: 0, x: 30 }}
                         whileInView={{ opacity: 1, x: 0 }}

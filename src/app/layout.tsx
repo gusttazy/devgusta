@@ -1,17 +1,24 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Lato, Dancing_Script } from "next/font/google";
 import clsx from "clsx";
 import "./globals.css";
 import React from "react";
 import AppLoader from "../components/LoadingScreen/AppLoader";
 
-const montserrat = Montserrat({
+const lato = Lato({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["100", "300", "400", "700", "900"],
   display: "swap",
   preload: true,
   fallback: ["system-ui", "arial"],
-  variable: "--font-montserrat",
+  variable: "--font-lato",
+});
+
+const dancingScript = Dancing_Script({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-dancing",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -46,7 +53,8 @@ export default function RootLayout({
       </head>
       <body
         className={clsx(
-          montserrat.className,
+          lato.className,
+          dancingScript.variable,
           "bg-[#121212] text-white antialiased"
         )}
       >
