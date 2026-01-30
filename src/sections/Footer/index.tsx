@@ -2,12 +2,6 @@
 
 import { FC, memo, useCallback } from "react";
 import Link from "next/link";
-import {
-  GithubIcon,
-  LinkedinIcon,
-  InstagramIcon,
-  MessageCircle,
-} from "lucide-react";
 
 // Categorias (mesmos IDs da Navbar)
 const categories = [
