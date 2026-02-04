@@ -70,57 +70,55 @@ const TechBadge = memo(({ tech }: { tech: TechItem }) => {
 TechBadge.displayName = "TechBadge";
 
 // Subcomponente de Cartão de Grupo
-const TechCard = memo(
-  ({ group, index }: { group: TechGroup; index: number }) => {
-    const GroupIcon = group.icon;
+const TechCard = memo(({ group }: { group: TechGroup }) => {
+  const GroupIcon = group.icon;
 
-    return (
-      <motion.div
-        variants={cardVariants}
-        className={clsx(
-          "relative rounded-3xl p-6 flex flex-col overflow-hidden",
-          "border border-white/10 bg-white/5 backdrop-blur-md shadow-lg",
-          "transition-all duration-300 group hover:bg-white/8 hover:border-[#00ff9d]/30",
-          "hover:shadow-[0_8px_32px_0_rgba(0,255,157,0.1)]",
-          group.colSpan,
-          group.rowSpan,
-        )}
-      >
-        {/* Texture Layer */}
-        <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent pointer-events-none" />
+  return (
+    <motion.div
+      variants={cardVariants}
+      className={clsx(
+        "relative rounded-3xl p-6 flex flex-col overflow-hidden",
+        "border border-white/10 bg-white/5 backdrop-blur-md shadow-lg",
+        "transition-all duration-300 group hover:bg-white/8 hover:border-[#00ff9d]/30",
+        "hover:shadow-[0_8px_32px_0_rgba(0,255,157,0.1)]",
+        group.colSpan,
+        group.rowSpan,
+      )}
+    >
+      {/* Texture Layer */}
+      <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col h-full">
-          {/* Header do Card */}
-          <div className="flex items-center gap-4 mb-6">
-            <div className="p-3 rounded-2xl bg-black/40 border border-white/10 text-[#00ff9d] shadow-inner">
-              <GroupIcon size={22} />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-white tracking-tight">
-                {group.title}
-              </h3>
-              <p className="text-zinc-400 text-xs font-medium mt-0.5">
-                {group.description}
-              </p>
-            </div>
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Header do Card */}
+        <div className="flex items-center gap-4 mb-6">
+          <div className="p-3 rounded-2xl bg-black/40 border border-white/10 text-[#00ff9d] shadow-inner">
+            <GroupIcon size={22} />
           </div>
-
-          {/* Lista de Itens */}
-          <div
-            className={clsx(
-              "gap-3 mt-auto",
-              group.id === "mobile" ? "flex flex-col" : "grid grid-cols-2",
-            )}
-          >
-            {group.techs.map((tech) => (
-              <TechBadge key={tech.name} tech={tech} />
-            ))}
+          <div>
+            <h3 className="text-lg font-bold text-white tracking-tight">
+              {group.title}
+            </h3>
+            <p className="text-zinc-400 text-xs font-medium mt-0.5">
+              {group.description}
+            </p>
           </div>
         </div>
-      </motion.div>
-    );
-  },
-);
+
+        {/* Lista de Itens */}
+        <div
+          className={clsx(
+            "gap-3 mt-auto",
+            group.id === "mobile" ? "flex flex-col" : "grid grid-cols-2",
+          )}
+        >
+          {group.techs.map((tech) => (
+            <TechBadge key={tech.name} tech={tech} />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+});
 
 TechCard.displayName = "TechCard";
 
@@ -165,8 +163,8 @@ export default function Techs() {
           whileInView="show"
           viewport={{ once: true, amount: 0.1 }}
         >
-          {techGroups.map((group, index) => (
-            <TechCard key={group.id} group={group} index={index} />
+          {techGroups.map((group) => (
+            <TechCard key={group.id} group={group} />
           ))}
         </motion.div>
       </div>
