@@ -13,7 +13,7 @@ const Footer = dynamic(() => import("@/sections/Footer"));
 
 export default function Home() {
   return (
-    <div className="min-h-screen text-white overflow-x-hidden">
+    <div className="min-h-screen text-white overflow-x-hidden animate-fadeIn">
       <header className="fixed top-0 left-0 right-0 z-50">
         <Navbar />
       </header>

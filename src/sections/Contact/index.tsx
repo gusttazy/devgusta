@@ -11,6 +11,40 @@ const serviceId = "service_lpbicy5";
 const templateId = "template_nz60vlv";
 const publicKey = "gwnEUAC8kpCMaBwvv";
 
+// Variantes de animação - Padrão Projects
+const headerVariants = {
+  hidden: { opacity: 0, y: -20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
+};
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -34,7 +68,7 @@ export default function Contact() {
           ...formData,
           time: new Date().toLocaleString(),
         },
-        publicKey
+        publicKey,
       );
 
       toast.success("Mensagem enviada com sucesso!");
@@ -48,7 +82,7 @@ export default function Contact() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -60,36 +94,6 @@ export default function Contact() {
     focus:outline-none focus:ring-1 focus:ring-[#00ff9d] focus:border-[#00ff9d]
     hover:bg-white/10 focus:bg-white/10
   `;
-
-  const fadeUp = {
-    hidden: { opacity: 0, y: 32 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.7, ease: "easeOut" },
-    },
-  };
-
-  const staggerContainer = {
-    hidden: {},
-    show: {
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const formItemVariants = {
-    hidden: { opacity: 0, y: 24, scale: 0.95, filter: "blur(6px)" },
-    show: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      filter: "blur(0px)",
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-    },
-  };
 
   const fields = [
     { id: "name", label: "Nome", type: "text", placeholder: "Seu nome" },
@@ -111,10 +115,10 @@ export default function Contact() {
       >
         <div className="w-full max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            variants={cardVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.1 }}
             className="rounded-3xl bg-[#181818]/90 border border-[#00ff9d]/10 shadow-2xl
                        px-3 sm:px-6 md:px-12 py-6 sm:py-12 md:py-20"
           >
@@ -122,7 +126,7 @@ export default function Contact() {
               {/* Header */}
               <motion.div
                 className="text-center mb-10"
-                variants={staggerContainer}
+                variants={headerVariants}
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true }}
@@ -130,14 +134,10 @@ export default function Contact() {
                 <motion.h2
                   className="text-2xl sm:text-4xl font-bold bg-linear-to-r
                              from-[#00ff9d] to-[#00ff9d]/70 text-transparent bg-clip-text mb-3"
-                  variants={fadeUp}
                 >
                   Contato
                 </motion.h2>
-                <motion.p
-                  className="text-white/80 text-lg max-w-2xl mx-auto"
-                  variants={fadeUp}
-                >
+                <motion.p className="text-white/80 text-lg max-w-2xl mx-auto">
                   Vamos conversar! Entre em contato para falar sobre
                   oportunidades, projetos ou trocar ideias de tecnologia.
                 </motion.p>
@@ -147,7 +147,7 @@ export default function Contact() {
               <motion.form
                 onSubmit={handleSubmit}
                 className="space-y-5"
-                variants={staggerContainer}
+                variants={containerVariants}
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true }}
@@ -157,7 +157,7 @@ export default function Contact() {
                     <motion.div
                       key={id}
                       className="space-y-1.5"
-                      variants={formItemVariants}
+                      variants={cardVariants}
                     >
                       <label
                         htmlFor={id}
@@ -186,7 +186,7 @@ export default function Contact() {
                 </div>
 
                 {/* Subject */}
-                <motion.div className="space-y-1.5" variants={formItemVariants}>
+                <motion.div className="space-y-1.5" variants={cardVariants}>
                   <label
                     htmlFor="subject"
                     className={`block font-medium ${
@@ -210,7 +210,7 @@ export default function Contact() {
                 </motion.div>
 
                 {/* Message */}
-                <motion.div className="space-y-1.5" variants={formItemVariants}>
+                <motion.div className="space-y-1.5" variants={cardVariants}>
                   <label
                     htmlFor="message"
                     className={`block font-medium ${
@@ -235,7 +235,7 @@ export default function Contact() {
                 </motion.div>
 
                 {/* Button */}
-                <motion.div variants={formItemVariants}>
+                <motion.div variants={cardVariants}>
                   <button
                     type="submit"
                     disabled={sending}

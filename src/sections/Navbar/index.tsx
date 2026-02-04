@@ -72,7 +72,7 @@ export default React.memo(function Navbar() {
         });
 
         const visibleEntries = Array.from(visibleMap.values()).filter(
-          (entry) => entry.isIntersecting && entry.intersectionRatio > 0
+          (entry) => entry.isIntersecting && entry.intersectionRatio > 0,
         );
 
         if (visibleEntries.length === 0) return;
@@ -91,7 +91,7 @@ export default React.memo(function Navbar() {
         clearTimeout(updateTimeout);
         updateTimeout = setTimeout(() => {
           const category = categories.find(
-            (cat) => cat.id === mostVisible.target.id
+            (cat) => cat.id === mostVisible.target.id,
           );
 
           if (category && category.name !== active) {
@@ -102,7 +102,7 @@ export default React.memo(function Navbar() {
       {
         rootMargin: "-10% 0px -40% 0px",
         threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-      }
+      },
     );
 
     categories.forEach((category) => {
@@ -132,14 +132,24 @@ export default React.memo(function Navbar() {
   useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
   // Variantes de Animação
   const mobileMenuVariants = {
     hidden: { opacity: 0, y: -24 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
-    exit: { opacity: 0, y: -24, transition: { duration: 0.25, ease: "easeIn" } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+    },
+    exit: {
+      opacity: 0,
+      y: -24,
+      transition: { duration: 0.25, ease: "easeIn" },
+    },
   };
 
   const mobileItemVariants = {
@@ -151,7 +161,6 @@ export default React.memo(function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 py-4 transition-all duration-300">
       {/* Container principal com justify-between para separar Logo e Menu */}
       <nav className="container mx-auto max-w-7xl flex items-center justify-between px-4 relative">
-
         {/* === LOGO (Esquerda) === */}
         <div className="relative z-50">
           <button
@@ -184,12 +193,15 @@ export default React.memo(function Navbar() {
             {categories.map(({ name }) => (
               <motion.button
                 key={name}
-                ref={(el) => { buttonsRef.current[name] = el; }}
+                ref={(el) => {
+                  buttonsRef.current[name] = el;
+                }}
                 onClick={() => scrollToSection(name)}
-                className={`relative z-10 px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${active === name
-                  ? "text-[#00ff9d]"
-                  : "text-white/60 hover:text-white"
-                  }`}
+                className={`relative z-10 px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                  active === name
+                    ? "text-[#00ff9d]"
+                    : "text-white/60 hover:text-white"
+                }`}
               >
                 {name}
               </motion.button>
@@ -237,10 +249,11 @@ export default React.memo(function Navbar() {
                   <motion.button
                     key={category.name}
                     onClick={() => scrollToSection(category.name)}
-                    className={`w-full px-4 py-3 text-left text-base rounded-xl transition-all border border-transparent ${active === category.name
-                      ? "text-[#00ff9d] font-semibold bg-[#00ff9d]/10 border-[#00ff9d]/20"
-                      : "text-white/70 hover:text-white hover:bg-white/5"
-                      }`}
+                    className={`w-full px-4 py-3 text-left text-base rounded-xl transition-all border border-transparent ${
+                      active === category.name
+                        ? "text-[#00ff9d] font-semibold bg-[#00ff9d]/10 border-[#00ff9d]/20"
+                        : "text-white/70 hover:text-white hover:bg-white/5"
+                    }`}
                     variants={mobileItemVariants}
                     whileTap={{ scale: 0.98 }}
                   >

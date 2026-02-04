@@ -3,7 +3,6 @@ import { Lato, Dancing_Script } from "next/font/google";
 import clsx from "clsx";
 import "./globals.css";
 import React from "react";
-import AppLoader from "../components/LoadingScreen/AppLoader";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -55,10 +54,10 @@ export default function RootLayout({
         className={clsx(
           lato.className,
           dancingScript.variable,
-          "bg-[#121212] text-white antialiased"
+          "bg-[#121212] text-white antialiased",
         )}
       >
-        <AppLoader>{children}</AppLoader>
+        {children}
       </body>
     </html>
   );

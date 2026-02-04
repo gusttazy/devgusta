@@ -23,9 +23,17 @@ interface SocialLink {
 
 const SOCIAL_LINKS: SocialLink[] = [
   { name: "GitHub", url: "https://github.com/gusttazy", icon: SiGithub },
-  { name: "LinkedIn", url: "https://www.linkedin.com/in/gustaguiar/", icon: SiLinkedin },
+  {
+    name: "LinkedIn",
+    url: "https://www.linkedin.com/in/gustaguiar/",
+    icon: SiLinkedin,
+  },
   { name: "Email", url: "mailto:gustavoaguiar0916@gmail.com", icon: SiGmail },
-  { name: "Instagram", url: "https://www.instagram.com/gusttazy/", icon: SiInstagram },
+  {
+    name: "Instagram",
+    url: "https://www.instagram.com/gusttazy/",
+    icon: SiInstagram,
+  },
   { name: "X", url: "https://x.com/gustola_", icon: SiX },
   { name: "WhatsApp", url: "https://wa.me/5592992279956", icon: SiWhatsapp },
 ];
@@ -116,7 +124,6 @@ const Hero = () => {
         animate="show"
       >
         <div className="flex flex-col items-center text-center space-y-6 sm:space-y-8">
-
           {/* Status Badge */}
           <motion.div variants={ANIMATION_VARIANTS.fadeScale}>
             <StatusBadge />
@@ -128,7 +135,9 @@ const Hero = () => {
             className="space-y-2 sm:space-y-3"
           >
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight">
-              <span className="block text-white/90 mb-1 sm:mb-2">Olá, sou o</span>
+              <span className="block text-white/90 mb-1 sm:mb-2">
+                Olá, sou o
+              </span>
               <span className="block bg-linear-to-r from-[#00ff9d] via-emerald-400 to-[#00ff9d] bg-clip-text text-transparent animate-gradient">
                 Gustavo Rodrigues
               </span>
