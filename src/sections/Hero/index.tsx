@@ -39,14 +39,6 @@ const SOCIAL_LINKS: SocialLink[] = [
 ];
 
 // Variantes de animação - Padrão Projects
-const headerVariants = {
-  hidden: { opacity: 0, y: -20 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
