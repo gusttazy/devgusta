@@ -19,28 +19,19 @@ export const projects: Project[] = [
     repositoryUrl: "https://github.com/gusttazy/charts2u",
   },
   {
-    title: "Cadastro de Alunos",
+    title: "Frostify",
     description:
-      "Aplicação web para cadastro, listagem e remoção de alunos. Frontend em React e backend em Node.js/Express com banco SQLite.",
-    image: "/images/cadastroalunos.png",
-    technologies: ["React", "Vite", "Node.js", "Express", "SQLite"],
-    previewUrl: "",
-    repositoryUrl: "https://github.com/gusttazy/fullstack-app",
-  },
-  {
-    title: "Darker UI",
-    description:
-      "Uma landing page moderna e elegante para SaaS, desenvolvida com as tecnologias mais recentes do ecossistema React.",
-    image: "/images/darker-ui.png",
+      "Sistema moderno de gerenciamento de ordens de serviço para refrigeração e climatização, com interface intuitiva e responsiva.",
+    image: "/images/frostify.png",
     technologies: [
       "React",
       "Next.js",
       "TypeScript",
+      "Shadcn/UI",
       "Tailwind CSS",
-      "Framer Motion",
     ],
-    previewUrl: "https://darker-ui.vercel.app/",
-    repositoryUrl: "https://github.com/gusttazy/darker-ui",
+    previewUrl: "https://frostify-sys.vercel.app/",
+    repositoryUrl: "https://github.com/gusttazy/frostify",
   },
   {
     title: "Itá Marketplace",

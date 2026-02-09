@@ -1,64 +1,222 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-// Adicionei FaCode nas importações
-import { FaBars, FaTimes, FaCode } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { categories } from "@/data/categories";
+
+// Variantes de animação - Estilo Framer moderno (suavizado)
+const navbarVariants = {
+  hidden: {
+    y: -100,
+    opacity: 0,
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 25,
+      mass: 1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: -10 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.6,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+};
+
+const mobileMenuVariants = {
+  hidden: {
+    opacity: 0,
+    height: 0,
+    transition: {
+      duration: 0.4,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+  visible: {
+    opacity: 1,
+    height: "auto",
+    transition: {
+      duration: 0.4,
+      ease: [0.16, 1, 0.3, 1],
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const mobileItemVariants = {
+  hidden: { opacity: 0, x: -20, filter: "blur(4px)" },
+  visible: {
+    opacity: 1,
+    x: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.5,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
 
 export default React.memo(function Navbar() {
   const [active, setActive] = useState("Início");
   const [isOpen, setIsOpen] = useState(false);
-  const [indicatorStyle, setIndicatorStyle] = useState({});
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
-  const buttonsRef = useRef<{ [key: string]: HTMLButtonElement | null }>({});
   const isScrolling = useRef<boolean>(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const observerRef = useRef<IntersectionObserver | undefined>(undefined);
+  const scrollAnimationRef = useRef<number | null>(null);
+  const targetSectionRef = useRef<string | null>(null);
 
-  // Scroll para seção
-  const scrollToSection = useCallback((categoryName: string) => {
-    const category = categories.find((cat) => cat.name === categoryName);
-    if (!category) return;
+  /**
+   * Função de easing para suavizar o scroll (mesma do NavButton)
+   */
+  const easeInOutQuad = (t: number): number =>
+    t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 
-    const element = document.getElementById(category.id);
-    if (!element) return;
+  /**
+   * Atualiza a seção ativa baseado na posição atual do scroll
+   * Para criar efeito visual de transição entre seções
+   */
+  const updateActiveSectionDuringScroll = useCallback(() => {
+    // Se temos um alvo definido, não atualiza durante o scroll programático
+    if (targetSectionRef.current) return;
+
+    const scrollY = window.scrollY + window.innerHeight / 3;
+
+    for (const category of categories) {
+      const element = document.getElementById(category.id);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        const elementTop = window.scrollY + rect.top;
+        const elementBottom = elementTop + element.offsetHeight;
+
+        if (scrollY >= elementTop && scrollY < elementBottom) {
+          setActive(category.name);
+          return;
+        }
+      }
+    }
+
+    // Verifica se está no topo
+    if (window.scrollY < 100) {
+      setActive("Início");
+    }
+  }, []);
+
+  /**
+   * Scroll suave customizado para uma seção específica
+   */
+  const scrollToSection = useCallback(
+    (categoryName: string) => {
+      const category = categories.find((cat) => cat.name === categoryName);
+      if (!category) return;
+
+      const element = document.getElementById(category.id);
+      if (!element) return;
+
+      // Cancela qualquer animação de scroll anterior
+      if (scrollAnimationRef.current) {
+        window.cancelAnimationFrame(scrollAnimationRef.current);
+      }
+
+      isScrolling.current = true;
+      setIsOpen(false);
+      targetSectionRef.current = category.name;
+
+      const startY = window.scrollY;
+      // Usa getBoundingClientRect para cálculo preciso
+      const rect = element.getBoundingClientRect();
+      const targetY = window.scrollY + rect.top - 80; // 80px de offset para header
+      const diff = targetY - startY;
+      let start: number | null = null;
+
+      const step = (timestamp: number) => {
+        if (!start) start = timestamp;
+        const time = Math.min(1, (timestamp - start) / 1200);
+        const eased = easeInOutQuad(time);
+
+        // Scroll vai EXATAMENTE para o destino calculado
+        const currentY = startY + diff * eased;
+        window.scrollTo(0, currentY);
+
+        // Atualiza indicador visual (passa pelas seções)
+        updateActiveSectionDuringScroll();
+
+        if (time < 1) {
+          scrollAnimationRef.current = window.requestAnimationFrame(step);
+        } else {
+          // Garante seção FINAL correta
+          setActive(category.name);
+          window.scrollTo(0, targetY); // Garante posição exata
+          targetSectionRef.current = null;
+          isScrolling.current = false;
+          scrollAnimationRef.current = null;
+        }
+      };
+
+      scrollAnimationRef.current = window.requestAnimationFrame(step);
+    },
+    [updateActiveSectionDuringScroll],
+  );
+
+  /**
+   * Scroll suave para o topo da página
+   */
+  const scrollToTop = useCallback(() => {
+    // Cancela qualquer animação anterior
+    if (scrollAnimationRef.current) {
+      window.cancelAnimationFrame(scrollAnimationRef.current);
+    }
 
     isScrolling.current = true;
     setIsOpen(false);
+    targetSectionRef.current = "Início";
 
-    element.scrollIntoView({ behavior: "smooth", block: "start" });
+    const startY = window.scrollY;
+    const targetY = 0; // Topo exato
+    const diff = targetY - startY;
+    let start: number | null = null;
 
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const time = Math.min(1, (timestamp - start) / 900);
+      const eased = easeInOutQuad(time);
 
-    scrollTimeoutRef.current = setTimeout(() => {
-      setActive(category.name);
-      isScrolling.current = false;
-    }, 1000);
-  }, []);
+      // Scroll vai EXATAMENTE para o topo
+      const currentY = startY + diff * eased;
+      window.scrollTo(0, currentY);
 
-  // Scroll para o topo ao clicar no Logo
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    setActive("Início");
-  };
+      // Atualiza indicador visual (passa pelas seções)
+      updateActiveSectionDuringScroll();
 
-  // Atualiza indicador visual
-  useEffect(() => {
-    const activeButton = buttonsRef.current[active];
-    if (!activeButton) return;
+      if (time < 1) {
+        scrollAnimationRef.current = window.requestAnimationFrame(step);
+      } else {
+        // Garante topo exato
+        setActive("Início");
+        window.scrollTo(0, 0);
+        targetSectionRef.current = null;
+        isScrolling.current = false;
+        scrollAnimationRef.current = null;
+      }
+    };
 
-    const { offsetLeft, offsetWidth } = activeButton;
-    setIndicatorStyle({
-      left: `${offsetLeft}px`,
-      width: `${offsetWidth}px`,
-      transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-    });
-  }, [active]);
+    scrollAnimationRef.current = window.requestAnimationFrame(step);
+  }, [updateActiveSectionDuringScroll]);
 
-  // Observer (Logica de Scroll Spy)
+  // Observer (Scroll Spy) - Detecta quando o usuário faz scroll manual
   useEffect(() => {
     let updateTimeout: NodeJS.Timeout;
     const visibleMap = new Map<string, IntersectionObserverEntry>();
@@ -76,6 +234,7 @@ export default React.memo(function Navbar() {
         );
 
         if (visibleEntries.length === 0) return;
+
         const mostVisible = visibleEntries.reduce((prev, current) => {
           const prevHeight = prev.intersectionRect.height;
           const currentHeight = current.intersectionRect.height;
@@ -113,7 +272,9 @@ export default React.memo(function Navbar() {
     return () => {
       observerRef.current?.disconnect();
       clearTimeout(updateTimeout);
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      if (scrollAnimationRef.current) {
+        window.cancelAnimationFrame(scrollAnimationRef.current);
+      }
     };
   }, [active]);
 
@@ -130,141 +291,211 @@ export default React.memo(function Navbar() {
 
   // Bloqueia scroll no mobile
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
     return () => {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
 
-  // Variantes de Animação
-  const mobileMenuVariants = {
-    hidden: { opacity: 0, y: -24 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-    },
-    exit: {
-      opacity: 0,
-      y: -24,
-      transition: { duration: 0.25, ease: "easeIn" },
-    },
-  };
-
-  const mobileItemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
-  };
-
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 py-4 transition-all duration-300">
-      {/* Container principal com justify-between para separar Logo e Menu */}
-      <nav className="container mx-auto max-w-7xl flex items-center justify-between px-4 relative">
-        {/* === LOGO (Esquerda) === */}
-        <div className="relative z-50">
-          <button
-            onClick={scrollToTop}
-            className="group flex items-center gap-3 focus:outline-none"
-            aria-label="Voltar ao topo"
-          >
-            {/* Ícone Glassy */}
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-[#1e1e1e]/80 backdrop-blur-sm border border-white/10 text-[#00ff9d] shadow-lg transition-all duration-300 group-hover:border-[#00ff9d]/50 group-hover:shadow-[0_0_15px_rgba(0,255,157,0.2)]">
-              <FaCode size={20} />
+    <motion.header
+      className="fixed top-0 left-0 right-0 z-50 py-3 sm:py-4"
+      variants={navbarVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <nav className="container mx-auto max-w-7xl px-4">
+        {/* Desktop Navbar */}
+        <div className="hidden md:flex items-center justify-center">
+          <div className="relative flex items-center gap-1 bg-[#1e1e1e]/80 backdrop-blur-xl px-2 py-2 rounded-2xl border border-white/10 shadow-2xl shadow-black/30">
+            {/* Logo */}
+            <motion.button
+              onClick={scrollToTop}
+              className="group relative flex items-center gap-2 px-4 py-2.5 rounded-xl overflow-hidden transition-all duration-500"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              custom={0}
+              variants={itemVariants}
+            >
+              <div className="absolute inset-0 bg-linear-to-r from-[#00ff9d]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="relative flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-[#00ff9d] animate-pulse" />
+                <span className="font-bold text-sm tracking-tight">
+                  <span className="text-[#00ff9d]">dev</span>
+                  <span className="text-white/90 group-hover:text-white transition-colors">
+                    Gusta
+                  </span>
+                </span>
+              </div>
+            </motion.button>
+
+            {/* Separator */}
+            <div className="w-px h-6 bg-white/10" />
+
+            {/* Navigation Items */}
+            <div className="flex items-center gap-1">
+              {categories.map((category, index) => (
+                <motion.button
+                  key={category.name}
+                  onClick={() => scrollToSection(category.name)}
+                  onMouseEnter={() => setHoveredItem(category.name)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                  className="relative px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  custom={index + 1}
+                  variants={itemVariants}
+                >
+                  {/* Active/Hover background */}
+                  <AnimatePresence>
+                    {(active === category.name ||
+                      hoveredItem === category.name) && (
+                      <motion.div
+                        className="absolute inset-0 rounded-xl"
+                        layoutId={
+                          active === category.name ? "activeTab" : "hoverTab"
+                        }
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 35,
+                        }}
+                        style={{
+                          background:
+                            active === category.name
+                              ? "linear-gradient(135deg, rgba(0, 255, 157, 0.15) 0%, rgba(0, 255, 157, 0.05) 100%)"
+                              : "rgba(255, 255, 255, 0.03)",
+                          border:
+                            active === category.name
+                              ? "1px solid rgba(0, 255, 157, 0.2)"
+                              : "1px solid rgba(255, 255, 255, 0.05)",
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
+
+                  {/* Text */}
+                  <span
+                    className={`relative z-10 transition-colors duration-300 ${
+                      active === category.name
+                        ? "text-[#00ff9d]"
+                        : hoveredItem === category.name
+                          ? "text-white"
+                          : "text-white/60"
+                    }`}
+                  >
+                    {category.name}
+                  </span>
+
+                  {/* Active indicator dot */}
+                  {active === category.name && (
+                    <motion.div
+                      className="absolute -bottom-1 left-1/2 w-1 h-1 rounded-full bg-[#00ff9d]"
+                      layoutId="activeDot"
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 35,
+                      }}
+                      style={{ x: "-50%" }}
+                    />
+                  )}
+                </motion.button>
+              ))}
             </div>
-            {/* Nome (Opcional - aparece apenas em telas maiores) */}
-            <span className="hidden sm:block text-white font-bold tracking-wide text-lg group-hover:text-[#00ff9d] transition-colors">
-              <span className="text-[#00ff9d]">dev</span>Gusta
-            </span>
-          </button>
-        </div>
-
-        {/* === MENU DESKTOP (Centralizado Absoluto) === */}
-        <div className="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="relative flex space-x-1 bg-[#1e1e1e]/80 backdrop-blur-sm px-2 py-2 rounded-full shadow-lg border border-white/10">
-            {/* Indicador Animado */}
-            <motion.div
-              className="absolute h-[calc(100%-16px)] top-2 bg-linear-to-r from-[#00ff9d]/20 to-[#00ff9d]/5 rounded-full shadow-[0_0_10px_rgba(0,255,157,0.1)] border border-[#00ff9d]/20"
-              style={indicatorStyle}
-              layoutId="navbar-indicator"
-            />
-
-            {/* Links */}
-            {categories.map(({ name }) => (
-              <motion.button
-                key={name}
-                ref={(el) => {
-                  buttonsRef.current[name] = el;
-                }}
-                onClick={() => scrollToSection(name)}
-                className={`relative z-10 px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
-                  active === name
-                    ? "text-[#00ff9d]"
-                    : "text-white/60 hover:text-white"
-                }`}
-              >
-                {name}
-              </motion.button>
-            ))}
           </div>
         </div>
 
-        {/* === HEADER MOBILE (Direita) === */}
-        <div className="md:hidden flex items-center gap-4">
-          {/* Nome da seção ativa no mobile */}
-          <span className="text-[#00ff9d] font-medium text-sm tracking-wide">
-            {active}
-          </span>
+        {/* Mobile Navbar */}
+        <div className="md:hidden flex items-center justify-between">
+          {/* Logo Mobile */}
+          <motion.button
+            onClick={scrollToTop}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1e1e1e]/80 backdrop-blur-xl border border-white/10"
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="w-2 h-2 rounded-full bg-[#00ff9d] animate-pulse" />
+            <span className="font-bold text-sm tracking-tight">
+              <span className="text-[#00ff9d]">dev</span>
+              <span className="text-white/90">Gusta</span>
+            </span>
+          </motion.button>
 
-          <button
+          {/* Menu Toggle */}
+          <motion.button
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2 text-white/70 hover:text-[#00ff9d] transition-colors bg-[#1e1e1e]/80 backdrop-blur-sm rounded-lg border border-white/10"
-            aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
+            className="relative p-3 rounded-xl bg-[#1e1e1e]/80 backdrop-blur-xl border border-white/10 text-white/70 hover:text-[#00ff9d] hover:border-[#00ff9d]/20 transition-all duration-500"
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <motion.div
-              initial={false}
               animate={{ rotate: isOpen ? 90 : 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
-              {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+              {isOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
             </motion.div>
-          </button>
+          </motion.button>
         </div>
 
-        {/* === DROPDOWN MOBILE === */}
+        {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="fixed inset-x-0 top-[72px] bg-[#0a0a0a]/95 backdrop-blur-xl md:hidden border-t border-white/10 shadow-2xl"
+              className="md:hidden mt-3 overflow-hidden rounded-2xl bg-[#1e1e1e]/95 backdrop-blur-xl border border-white/10"
+              variants={mobileMenuVariants}
               initial="hidden"
               animate="visible"
-              exit="exit"
-              variants={mobileMenuVariants}
+              exit="hidden"
             >
-              <motion.div
-                className="container mx-auto px-4 py-6 flex flex-col gap-2"
-                variants={mobileMenuVariants}
-              >
+              <div className="p-3 space-y-1">
                 {categories.map((category) => (
                   <motion.button
                     key={category.name}
                     onClick={() => scrollToSection(category.name)}
-                    className={`w-full px-4 py-3 text-left text-base rounded-xl transition-all border border-transparent ${
+                    className={`w-full px-4 py-3 text-left rounded-xl transition-all duration-500 ${
                       active === category.name
-                        ? "text-[#00ff9d] font-semibold bg-[#00ff9d]/10 border-[#00ff9d]/20"
-                        : "text-white/70 hover:text-white hover:bg-white/5"
+                        ? "bg-linear-to-r from-[#00ff9d]/15 to-[#00ff9d]/5 border border-[#00ff9d]/20 text-[#00ff9d]"
+                        : "text-white/70 hover:text-white hover:bg-white/5 border border-transparent"
                     }`}
                     variants={mobileItemVariants}
                     whileTap={{ scale: 0.98 }}
                   >
-                    {category.name}
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">{category.name}</span>
+                      {active === category.name && (
+                        <motion.div
+                          className="w-1.5 h-1.5 rounded-full bg-[#00ff9d]"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 35,
+                          }}
+                        />
+                      )}
+                    </div>
                   </motion.button>
                 ))}
-              </motion.div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </nav>
-    </header>
+    </motion.header>
   );
 });

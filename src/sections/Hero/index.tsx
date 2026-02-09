@@ -38,28 +38,36 @@ const SOCIAL_LINKS: SocialLink[] = [
   { name: "WhatsApp", url: "https://wa.me/5592992279956", icon: SiWhatsapp },
 ];
 
-const ANIMATION_VARIANTS = {
-  container: {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.08, delayChildren: 0.15 },
+// Variantes de animação - Padrão Projects
+const headerVariants = {
+  hidden: { opacity: 0, y: -20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94],
     },
   },
-  fadeUp: {
-    hidden: { opacity: 0, y: 30 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-    },
-  },
-  fadeScale: {
-    hidden: { opacity: 0, scale: 0.95 },
-    show: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
     },
   },
 };
@@ -119,26 +127,26 @@ const Hero = () => {
     >
       <motion.div
         className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-20 sm:pb-24 lg:pb-32"
-        variants={ANIMATION_VARIANTS.container}
+        variants={containerVariants}
         initial="hidden"
         animate="show"
       >
         <div className="flex flex-col items-center text-center space-y-6 sm:space-y-8">
           {/* Status Badge */}
-          <motion.div variants={ANIMATION_VARIANTS.fadeScale}>
+          <motion.div variants={cardVariants}>
             <StatusBadge />
           </motion.div>
 
           {/* Main Heading */}
           <motion.div
-            variants={ANIMATION_VARIANTS.fadeUp}
+            variants={cardVariants}
             className="space-y-2 sm:space-y-3"
           >
-            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight">
               <span className="block text-white/90 mb-1 sm:mb-2">
                 Olá, sou o
               </span>
-              <span className="block bg-linear-to-r from-[#00ff9d] via-emerald-400 to-[#00ff9d] bg-clip-text text-transparent animate-gradient">
+              <span className="block bg-linear-to-r from-[#00ff9d] via-emerald-400 to-[#00ff9d] bg-clip-text text-transparent animate-gradient pb-2">
                 Gustavo Rodrigues
               </span>
             </h1>
@@ -146,7 +154,7 @@ const Hero = () => {
 
           {/* Role Badge */}
           <motion.div
-            variants={ANIMATION_VARIANTS.fadeUp}
+            variants={cardVariants}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm"
           >
             <Code2 className="w-4 h-4 text-[#00ff9d]" />
@@ -157,7 +165,7 @@ const Hero = () => {
 
           {/* Description */}
           <motion.p
-            variants={ANIMATION_VARIANTS.fadeUp}
+            variants={cardVariants}
             className="text-zinc-400 text-sm sm:text-base lg:text-lg max-w-xl mx-auto leading-relaxed px-4"
           >
             Criando experiências digitais únicas e interfaces modernas.
@@ -166,7 +174,7 @@ const Hero = () => {
 
           {/* CTA Section */}
           <motion.div
-            variants={ANIMATION_VARIANTS.fadeUp}
+            variants={cardVariants}
             className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full sm:w-auto pt-2"
           >
             <CVButton />
