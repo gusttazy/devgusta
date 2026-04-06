@@ -1,4 +1,4 @@
-import { Project } from "@/components/ProjectCard";
+import type { Project } from "@/core/types/project";
 
 // Lista de projetos exibidos na seção
 export const projects: Project[] = [

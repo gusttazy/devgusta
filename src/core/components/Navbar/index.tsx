@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { FaBars, FaTimes } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
-import { categories } from "@/data/categories";
+import { Menu, X as XIcon } from "lucide-react";
+import { ThemeToggle } from "@/core/components/ThemeToggle";
+import { m as motion, AnimatePresence  } from "framer-motion";
+import { categories } from "@/core/data/categories";
 
 // Variantes de animação - Estilo Framer moderno (suavizado)
 const navbarVariants = {
@@ -75,208 +76,102 @@ export default React.memo(function Navbar() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   const isScrolling = useRef<boolean>(false);
-  const observerRef = useRef<IntersectionObserver | undefined>(undefined);
-  const scrollAnimationRef = useRef<number | null>(null);
-  const targetSectionRef = useRef<string | null>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   /**
-   * Função de easing para suavizar o scroll (mesma do NavButton)
+   * Scroll suave customizado para uma seção específica via Lenis
    */
-  const easeInOutQuad = (t: number): number =>
-    t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  const scrollToSection = useCallback((categoryName: string) => {
+    const category = categories.find((cat) => cat.name === categoryName);
+    if (!category || isScrolling.current) return;
 
-  /**
-   * Atualiza a seção ativa baseado na posição atual do scroll
-   * Para criar efeito visual de transição entre seções
-   */
-  const updateActiveSectionDuringScroll = useCallback(() => {
-    // Se temos um alvo definido, não atualiza durante o scroll programático
-    if (targetSectionRef.current) return;
+    isScrolling.current = true;
+    setIsOpen(false);
+    setActive(category.name);
+    
+    // Clear any pending timeout
+    if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
 
-    const scrollY = window.scrollY + window.innerHeight / 3;
-
-    for (const category of categories) {
-      const element = document.getElementById(category.id);
-      if (element) {
-        const rect = element.getBoundingClientRect();
-        const elementTop = window.scrollY + rect.top;
-        const elementBottom = elementTop + element.offsetHeight;
-
-        if (scrollY >= elementTop && scrollY < elementBottom) {
-          setActive(category.name);
-          return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lenis = (window as any).lenis;
+    if (lenis) {
+      lenis.scrollTo(`#${category.id}`, { 
+        offset: -80,
+        onComplete: () => {
+          scrollTimeoutRef.current = setTimeout(() => { isScrolling.current = false; }, 50);
         }
-      }
-    }
-
-    // Verifica se está no topo
-    if (window.scrollY < 100) {
-      setActive("Início");
+      });
+    } else {
+      document.getElementById(category.id)?.scrollIntoView({ behavior: 'smooth' });
+      scrollTimeoutRef.current = setTimeout(() => { isScrolling.current = false; }, 800);
     }
   }, []);
-
-  /**
-   * Scroll suave customizado para uma seção específica
-   */
-  const scrollToSection = useCallback(
-    (categoryName: string) => {
-      const category = categories.find((cat) => cat.name === categoryName);
-      if (!category) return;
-
-      const element = document.getElementById(category.id);
-      if (!element) return;
-
-      // Cancela qualquer animação de scroll anterior
-      if (scrollAnimationRef.current) {
-        window.cancelAnimationFrame(scrollAnimationRef.current);
-      }
-
-      isScrolling.current = true;
-      setIsOpen(false);
-      targetSectionRef.current = category.name;
-
-      const startY = window.scrollY;
-      // Usa getBoundingClientRect para cálculo preciso
-      const rect = element.getBoundingClientRect();
-      const targetY = window.scrollY + rect.top - 80; // 80px de offset para header
-      const diff = targetY - startY;
-      let start: number | null = null;
-
-      const step = (timestamp: number) => {
-        if (!start) start = timestamp;
-        const time = Math.min(1, (timestamp - start) / 1200);
-        const eased = easeInOutQuad(time);
-
-        // Scroll vai EXATAMENTE para o destino calculado
-        const currentY = startY + diff * eased;
-        window.scrollTo(0, currentY);
-
-        // Atualiza indicador visual (passa pelas seções)
-        updateActiveSectionDuringScroll();
-
-        if (time < 1) {
-          scrollAnimationRef.current = window.requestAnimationFrame(step);
-        } else {
-          // Garante seção FINAL correta
-          setActive(category.name);
-          window.scrollTo(0, targetY); // Garante posição exata
-          targetSectionRef.current = null;
-          isScrolling.current = false;
-          scrollAnimationRef.current = null;
-        }
-      };
-
-      scrollAnimationRef.current = window.requestAnimationFrame(step);
-    },
-    [updateActiveSectionDuringScroll],
-  );
 
   /**
    * Scroll suave para o topo da página
    */
   const scrollToTop = useCallback(() => {
-    // Cancela qualquer animação anterior
-    if (scrollAnimationRef.current) {
-      window.cancelAnimationFrame(scrollAnimationRef.current);
-    }
-
+    if (isScrolling.current) return;
+    
     isScrolling.current = true;
     setIsOpen(false);
-    targetSectionRef.current = "Início";
+    setActive("Início");
 
-    const startY = window.scrollY;
-    const targetY = 0; // Topo exato
-    const diff = targetY - startY;
-    let start: number | null = null;
+    if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
 
-    const step = (timestamp: number) => {
-      if (!start) start = timestamp;
-      const time = Math.min(1, (timestamp - start) / 900);
-      const eased = easeInOutQuad(time);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lenis = (window as any).lenis;
+    if (lenis) {
+      lenis.scrollTo(0, { 
+        onComplete: () => {
+          scrollTimeoutRef.current = setTimeout(() => { isScrolling.current = false; }, 50);
+        }
+      });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollTimeoutRef.current = setTimeout(() => { isScrolling.current = false; }, 800);
+    }
+  }, []);
 
-      // Scroll vai EXATAMENTE para o topo
-      const currentY = startY + diff * eased;
-      window.scrollTo(0, currentY);
-
-      // Atualiza indicador visual (passa pelas seções)
-      updateActiveSectionDuringScroll();
-
-      if (time < 1) {
-        scrollAnimationRef.current = window.requestAnimationFrame(step);
-      } else {
-        // Garante topo exato
-        setActive("Início");
-        window.scrollTo(0, 0);
-        targetSectionRef.current = null;
-        isScrolling.current = false;
-        scrollAnimationRef.current = null;
-      }
-    };
-
-    scrollAnimationRef.current = window.requestAnimationFrame(step);
-  }, [updateActiveSectionDuringScroll]);
-
-  // Observer (Scroll Spy) - Detecta quando o usuário faz scroll manual
+  // Observer (Scroll Spy) - Meu "espião" pra descobrir em que parte do site o usuário tá lendo
   useEffect(() => {
-    let updateTimeout: NodeJS.Timeout;
-    const visibleMap = new Map<string, IntersectionObserverEntry>();
-
-    observerRef.current = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
+        // Se eu cliquei no menu pra ir pra uma seção, ignoro o espião no caminho pra evitar efeito "pisca-pisca" no menu
         if (isScrolling.current) return;
 
-        entries.forEach((entry) => {
-          visibleMap.set(entry.target.id, entry);
-        });
-
-        const visibleEntries = Array.from(visibleMap.values()).filter(
-          (entry) => entry.isIntersecting && entry.intersectionRatio > 0,
-        );
-
+        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
         if (visibleEntries.length === 0) return;
 
-        const mostVisible = visibleEntries.reduce((prev, current) => {
-          const prevHeight = prev.intersectionRect.height;
-          const currentHeight = current.intersectionRect.height;
+        // As vezes mais de uma seção cruza o raio de visão. 
+        // Uso esse reduce pra pegar a que tem a maior porcentagem preenchendo a tela do celular/monitor!
+        const mostVisible = visibleEntries.reduce((prev, current) => 
+          current.intersectionRatio > prev.intersectionRatio ? current : prev
+        );
 
-          if (Math.abs(prevHeight - currentHeight) < 10) {
-            return prev.boundingClientRect.top < current.boundingClientRect.top
-              ? prev
-              : current;
-          }
-          return currentHeight > prevHeight ? current : prev;
-        });
-
-        clearTimeout(updateTimeout);
-        updateTimeout = setTimeout(() => {
-          const category = categories.find(
-            (cat) => cat.id === mostVisible.target.id,
-          );
-
-          if (category && category.name !== active) {
-            setActive(category.name);
-          }
-        }, 150);
+        const category = categories.find((cat) => cat.id === mostVisible.target.id);
+        if (category) {
+          setActive(category.name);
+        }
       },
       {
-        rootMargin: "-10% 0px -40% 0px",
-        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-      },
+        // Esse rootMargin corta o rodapé e o topo da ativação pra ficar milimétricamente no meio da tela
+        rootMargin: "-20% 0px -40% 0px", 
+        threshold: [0.1, 0.3, 0.5, 0.7, 0.9],
+      }
     );
 
     categories.forEach((category) => {
       const element = document.getElementById(category.id);
-      if (element) observerRef.current?.observe(element);
+      if (element) observer.observe(element);
     });
 
     return () => {
-      observerRef.current?.disconnect();
-      clearTimeout(updateTimeout);
-      if (scrollAnimationRef.current) {
-        window.cancelAnimationFrame(scrollAnimationRef.current);
-      }
+      // Limpar lixo do escopo se o botão for desmontado por frescura do React
+      observer.disconnect();
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
-  }, [active]);
+  }, []);
 
   // Fecha menu ao clicar fora
   useEffect(() => {
@@ -310,8 +205,8 @@ export default React.memo(function Navbar() {
     >
       <nav className="container mx-auto max-w-7xl px-4">
         {/* Desktop Navbar */}
-        <div className="hidden md:flex items-center justify-center">
-          <div className="relative flex items-center gap-1 bg-[#1e1e1e]/80 backdrop-blur-xl px-2 py-2 rounded-2xl border border-white/10 shadow-2xl shadow-black/30">
+        <div className="hidden md:flex items-center justify-between mx-auto max-w-fit gap-2">
+          <div className="relative flex items-center gap-1 bg-surface/80 backdrop-blur-xl px-2 py-2 rounded-2xl border border-border shadow-2xl shadow-black/30">
             {/* Logo */}
             <motion.button
               onClick={scrollToTop}
@@ -327,8 +222,8 @@ export default React.memo(function Navbar() {
               <div className="relative flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#00ff9d] animate-pulse" />
                 <span className="font-bold text-sm tracking-tight">
-                  <span className="text-[#00ff9d]">dev</span>
-                  <span className="text-white/90 group-hover:text-white transition-colors">
+                  <span className="text-brand">dev</span>
+                  <span className="text-text-main group-hover:text-brand transition-colors">
                     Gusta
                   </span>
                 </span>
@@ -336,7 +231,7 @@ export default React.memo(function Navbar() {
             </motion.button>
 
             {/* Separator */}
-            <div className="w-px h-6 bg-white/10" />
+            <div className="w-px h-6 bg-border" />
 
             {/* Navigation Items */}
             <div className="flex items-center gap-1">
@@ -384,14 +279,13 @@ export default React.memo(function Navbar() {
                     )}
                   </AnimatePresence>
 
-                  {/* Text */}
                   <span
                     className={`relative z-10 transition-colors duration-300 ${
                       active === category.name
-                        ? "text-[#00ff9d]"
+                        ? "text-brand"
                         : hoveredItem === category.name
-                          ? "text-white"
-                          : "text-white/60"
+                          ? "text-text-main"
+                          : "text-text-muted"
                     }`}
                   >
                     {category.name}
@@ -400,7 +294,7 @@ export default React.memo(function Navbar() {
                   {/* Active indicator dot */}
                   {active === category.name && (
                     <motion.div
-                      className="absolute -bottom-1 left-1/2 w-1 h-1 rounded-full bg-[#00ff9d]"
+                      className="absolute -bottom-1 left-1/2 w-1 h-1 rounded-full bg-brand"
                       layoutId="activeDot"
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -417,6 +311,8 @@ export default React.memo(function Navbar() {
               ))}
             </div>
           </div>
+          
+          <ThemeToggle />
         </div>
 
         {/* Mobile Navbar */}
@@ -424,21 +320,24 @@ export default React.memo(function Navbar() {
           {/* Logo Mobile */}
           <motion.button
             onClick={scrollToTop}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1e1e1e]/80 backdrop-blur-xl border border-white/10"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface/80 backdrop-blur-xl border border-border"
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="w-2 h-2 rounded-full bg-[#00ff9d] animate-pulse" />
+            <div className="w-2 h-2 rounded-full bg-brand animate-pulse" />
             <span className="font-bold text-sm tracking-tight">
-              <span className="text-[#00ff9d]">dev</span>
-              <span className="text-white/90">Gusta</span>
+              <span className="text-brand">dev</span>
+              <span className="text-text-main">Gusta</span>
             </span>
           </motion.button>
 
-          {/* Menu Toggle */}
-          <motion.button
-            onClick={() => setIsOpen(!isOpen)}
-            className="relative p-3 rounded-xl bg-[#1e1e1e]/80 backdrop-blur-xl border border-white/10 text-white/70 hover:text-[#00ff9d] hover:border-[#00ff9d]/20 transition-all duration-500"
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            
+            {/* Menu Toggle */}
+            <motion.button
+              onClick={() => setIsOpen(!isOpen)}
+              className="relative p-3 rounded-xl bg-surface/80 backdrop-blur-xl border border-border text-text-muted hover:text-brand hover:border-brand/40 transition-all duration-500"
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
@@ -446,16 +345,17 @@ export default React.memo(function Navbar() {
               animate={{ rotate: isOpen ? 90 : 0 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
-              {isOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
+              {isOpen ? <XIcon size={18} /> : <Menu size={18} />}
             </motion.div>
           </motion.button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="md:hidden mt-3 overflow-hidden rounded-2xl bg-[#1e1e1e]/95 backdrop-blur-xl border border-white/10"
+              className="md:hidden mt-3 overflow-hidden rounded-2xl bg-surface/95 backdrop-blur-xl border border-border"
               variants={mobileMenuVariants}
               initial="hidden"
               animate="visible"
@@ -468,8 +368,8 @@ export default React.memo(function Navbar() {
                     onClick={() => scrollToSection(category.name)}
                     className={`w-full px-4 py-3 text-left rounded-xl transition-all duration-500 ${
                       active === category.name
-                        ? "bg-linear-to-r from-[#00ff9d]/15 to-[#00ff9d]/5 border border-[#00ff9d]/20 text-[#00ff9d]"
-                        : "text-white/70 hover:text-white hover:bg-white/5 border border-transparent"
+                        ? "bg-glow border border-brand/20 text-brand"
+                        : "text-text-muted hover:text-text-main hover:bg-surface border border-transparent"
                     }`}
                     variants={mobileItemVariants}
                     whileTap={{ scale: 0.98 }}
@@ -478,7 +378,7 @@ export default React.memo(function Navbar() {
                       <span className="font-medium">{category.name}</span>
                       {active === category.name && (
                         <motion.div
-                          className="w-1.5 h-1.5 rounded-full bg-[#00ff9d]"
+                          className="w-1.5 h-1.5 rounded-full bg-brand"
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
                           transition={{

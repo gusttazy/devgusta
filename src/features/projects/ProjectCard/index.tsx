@@ -3,16 +3,10 @@
 import { FC, memo } from "react";
 import Image from "next/image";
 import { Github, ExternalLink } from "lucide-react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
+import type { Project } from "@/core/types/project";
 
-export interface Project {
-  title: string;
-  description: string;
-  image: string;
-  technologies: string[];
-  previewUrl: string;
-  repositoryUrl: string;
-}
+export type { Project };
 
 interface ProjectCardProps {
   project: Project;
@@ -21,19 +15,20 @@ interface ProjectCardProps {
 const ProjectCard: FC<ProjectCardProps> = memo(({ project }) => {
   return (
     <motion.article
+      style={{ willChange: "transform, opacity" }}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="group relative flex flex-col lg:flex-row gap-8 lg:items-center 
-        p-6 sm:p-8 rounded-3xl border border-white/5 bg-white/5 backdrop-blur-sm
-        hover:bg-white/8 hover:border-[#00ff9d]/20 transition-all duration-500
-        hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
+        p-6 sm:p-8 rounded-3xl border border-border bg-surface backdrop-blur-sm
+        hover:bg-surface-hover hover:border-brand/30 transition-all duration-500
+        hover:shadow-[0_8px_30px_var(--glow)]"
     >
       {/* Project Image */}
       <div
         className="lg:w-7/12 relative aspect-16/10 sm:aspect-video 
-        rounded-2xl overflow-hidden bg-[#111] border border-white/5 shadow-lg group-hover:shadow-[#00ff9d]/10 transition-shadow duration-500"
+        rounded-2xl overflow-hidden bg-black/50 border border-border shadow-lg group-hover:shadow-[0_0_20px_var(--glow)] transition-shadow duration-500"
       >
         <Image
           src={project.image}
@@ -44,13 +39,13 @@ const ProjectCard: FC<ProjectCardProps> = memo(({ project }) => {
         />
 
         {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-linear-to-t from-[#111]/80 via-transparent to-transparent opacity-60 pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-t from-background/80 via-transparent to-transparent opacity-60 pointer-events-none" />
       </div>
 
       {/* Content */}
       <div className="lg:w-5/12 flex flex-col gap-5">
         <div className="flex items-center justify-between">
-          <h3 className="text-2xl sm:text-3xl font-bold text-white group-hover:text-[#00ff9d] transition-colors">
+          <h3 className="text-2xl sm:text-3xl font-bold text-text-main group-hover:text-brand transition-colors">
             {project.title}
           </h3>
 
@@ -59,8 +54,8 @@ const ProjectCard: FC<ProjectCardProps> = memo(({ project }) => {
               href={project.repositoryUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-all"
-              aria-label="GitHub Repository"
+              className="p-2 text-text-muted hover:text-text-main hover:bg-surface rounded-full transition-all"
+              aria-label="Repositório GitHub"
             >
               <Github size={20} />
             </a>
@@ -69,8 +64,8 @@ const ProjectCard: FC<ProjectCardProps> = memo(({ project }) => {
                 href={project.previewUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 text-white/50 hover:text-[#00ff9d] hover:bg-[#00ff9d]/10 rounded-full transition-all"
-                aria-label="Live Preview"
+                className="p-2 text-text-muted hover:text-brand hover:bg-brand/10 rounded-full transition-all"
+                aria-label="Ver Projeto"
               >
                 <ExternalLink size={20} />
               </a>
@@ -78,7 +73,7 @@ const ProjectCard: FC<ProjectCardProps> = memo(({ project }) => {
           </div>
         </div>
 
-        <p className="text-zinc-400 text-base sm:text-lg leading-relaxed">
+        <p className="text-text-muted text-base sm:text-lg leading-relaxed">
           {project.description}
         </p>
 
@@ -86,16 +81,16 @@ const ProjectCard: FC<ProjectCardProps> = memo(({ project }) => {
           {project.technologies.slice(0, 6).map((tech) => (
             <span
               key={tech}
-              className="px-3 py-1.5 text-xs sm:text-sm font-medium text-[#00ff9d] 
-                bg-[#00ff9d]/5 border border-[#00ff9d]/10 rounded-full"
+              className="px-3 py-1.5 text-xs sm:text-sm font-medium text-brand 
+                bg-brand/5 border border-brand/10 rounded-full"
             >
               {tech}
             </span>
           ))}
           {project.technologies.length > 6 && (
             <span
-              className="px-3 py-1.5 text-xs sm:text-sm font-medium text-zinc-500 
-                bg-white/5 border border-white/5 rounded-full"
+              className="px-3 py-1.5 text-xs sm:text-sm font-medium text-text-muted 
+                bg-surface border border-border rounded-full"
             >
               +{project.technologies.length - 6}
             </span>
