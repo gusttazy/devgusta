@@ -32,11 +32,13 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
 
     // Joguei a instância no window pra eu conseguir usar o lenis.scrollTo() em outros lugares,
     // tipo nos botões da Navbar. Dei cast de 'any' pra não apanhar do Typescript kkk
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).lenis = lenis;
 
     return () => {
       // Cleanup padrão pra não matar a memória da galera se desmontar
       lenis.destroy();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).lenis = null;
     };
   }, []);
