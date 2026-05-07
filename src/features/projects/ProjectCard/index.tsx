@@ -15,14 +15,13 @@ interface ProjectCardProps {
 const ProjectCard: FC<ProjectCardProps> = memo(({ project }) => {
   return (
     <motion.article
-      style={{ willChange: "transform, opacity" }}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="group relative flex flex-col lg:flex-row gap-8 lg:items-center 
-        p-6 sm:p-8 rounded-3xl border border-border bg-surface backdrop-blur-sm
-        hover:bg-surface-hover hover:border-brand/30 transition-all duration-500
+        p-6 sm:p-8 rounded-3xl border border-border bg-surface
+        hover:bg-surface-hover hover:border-brand/30 transition-[border-color,box-shadow] duration-500
         hover:shadow-[0_8px_30px_var(--glow)]"
     >
       {/* Project Image */}

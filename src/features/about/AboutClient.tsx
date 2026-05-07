@@ -62,7 +62,7 @@ export default function AboutClient({ codeSnippet }: AboutClientProps) {
           {/* 1. CARD BIO */}
           <motion.div
             variants={cardVariants}
-            className="md:col-span-2 relative rounded-3xl p-8 border border-border bg-surface backdrop-blur-md overflow-hidden flex flex-col justify-center group hover:border-brand/30 transition-colors duration-500"
+            className="md:col-span-2 relative rounded-3xl p-8 border border-border bg-surface overflow-hidden flex flex-col justify-center group hover:border-brand/30 transition-[border-color] duration-500"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-brand/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
@@ -79,7 +79,7 @@ export default function AboutClient({ codeSnippet }: AboutClientProps) {
           {/* 2. CARD LOCALIZAÇÃO */}
           <motion.div
             variants={cardVariants}
-            className="relative rounded-3xl p-6 border border-border bg-surface backdrop-blur-md overflow-hidden flex flex-col items-center justify-center text-center group hover:border-brand/30 transition-colors duration-500"
+            className="relative rounded-3xl p-6 border border-border bg-surface overflow-hidden flex flex-col items-center justify-center text-center group hover:border-brand/30 transition-[border-color] duration-500"
           >
             <div className="absolute inset-0 opacity-20 bg-[radial-gradient(var(--text-muted)_1px,transparent_1px)] bg-size-[16px_16px]" />
 
@@ -97,7 +97,7 @@ export default function AboutClient({ codeSnippet }: AboutClientProps) {
           {/* 3. CARD FORMAÇÃO */}
           <motion.div
             variants={cardVariants}
-            className="relative rounded-3xl p-6 border border-border bg-surface backdrop-blur-md overflow-hidden flex flex-col justify-between group hover:border-brand/30 transition-colors duration-500"
+            className="relative rounded-3xl p-6 border border-border bg-surface overflow-hidden flex flex-col justify-between group hover:border-brand/30 transition-[border-color] duration-500"
           >
             <div className="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity text-text-muted group-hover:text-brand">
               <Code2

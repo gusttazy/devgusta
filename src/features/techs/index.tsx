@@ -45,8 +45,8 @@ const TechCard = memo(({ group }: { group: TechGroup }) => {
       variants={cardVariants}
       className={clsx(
         "relative rounded-3xl p-6 flex flex-col overflow-hidden",
-        "border border-border bg-surface backdrop-blur-md shadow-lg",
-        "transition-all duration-300 group hover:border-brand/30",
+        "border border-border bg-surface shadow-lg",
+        "transition-[border-color,box-shadow] duration-300 group hover:border-brand/30",
         "hover:shadow-[0_8px_32px_0_var(--glow)]",
         group.colSpan,
         group.rowSpan,

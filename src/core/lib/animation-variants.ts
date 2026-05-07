@@ -11,12 +11,10 @@ export const headerVariants = {
 };
 
 export const cardVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95, willChange: "transform, opacity" },
+  hidden: { opacity: 0, y: 40 },
   show: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    willChange: "transform, opacity",
     transition: {
       duration: 0.6,
       ease: [0.25, 0.46, 0.45, 0.94],
